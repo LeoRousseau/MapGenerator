@@ -6,16 +6,16 @@ export function create(width: number, height: number): number[][] {
   for (let x = 0; x < width; x++) {
     elevationMap[x] = [];
     for (let y = 0; y < height; y++) {
-      elevationMap[x][y] = getNoiseValue(x, y, [0.1, 0.1], noise2D);
+      elevationMap[x][y] = getNoiseValue(x, y, [0.1, 0.1], noise2D, width);
     }
   }
   return elevationMap;
 }
 
-function getNoiseValue(x: number, y: number, origin: [number, number], noise: NoiseFunction2D) {
+function getNoiseValue(x: number, y: number, origin: [number, number], noise: NoiseFunction2D, size: number) {
   const NoiseScale = 1;
   const NoiseOctaves = 20;
-  const TextureSize = 100;
+  const TextureSize = size;
   const IslandSize = 20;
   let a = 0,
     noisesize = NoiseScale,
