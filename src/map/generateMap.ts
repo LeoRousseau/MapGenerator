@@ -4,6 +4,7 @@ import * as ElevationMap from "./elevationMap";
 import { findBorderPoint, getBorders, getFilteredMap } from "./mapUtils";
 import { createGraph, search } from "../bfs/search";
 import { getCanConnect, getGoal } from "../bfs/borderFunctions";
+import { createPath } from "./pathSmoother";
 
 window.addEventListener("load", (event) => {
   console.log("page is fully loaded");
@@ -11,7 +12,7 @@ window.addEventListener("load", (event) => {
 });
 
 let mapSVG: Svg;
-const step = 10;
+const step = 5;
 
 function generateMap(params: MapParameters, divID: string) {
   mapSVG = SVG().addTo(divID).size(params.dimension[0], params.dimension[1]);
@@ -46,7 +47,10 @@ function runSearch(elevationMap: NumberMap) {
   const end = graph.getNeighbours(start).find((n) => n.cellValue > 0);
   if (!end) return;
   const result = search(start, getGoal(end), graph, getCanConnect(start, end));
-
-  const pathString = result?.reduce((p, c) => p + ' ' +  c.x * step + ',' + c.y * step, '');
-  mapSVG.polygon(pathString).fill('#f06');
+  if (!result) return;
+  const points = result.map((n) => [n.x * step, n.y * step] as [number, number]);
+  const path = createPath(points, () => {
+    return Math.random() * 0.3 + 0.05;
+  });
+  mapSVG.path(path).fill("#f06");
 }
