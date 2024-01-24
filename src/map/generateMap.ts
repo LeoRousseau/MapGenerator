@@ -6,13 +6,15 @@ import { createGraph, search } from "../bfs/search";
 import { getCanConnect, getGoal } from "../bfs/borderFunctions";
 import { createPath } from "./pathSmoother";
 
-window.addEventListener("load", (event) => {
+window.addEventListener("load", (e) => {
   console.log("page is fully loaded");
   generateMap({ dimension: [1000, 1000] }, "#app");
 });
 
 let mapSVG: Svg;
 const step = 5;
+
+const getScreenPos = (pos: number) => (pos + 0.5) * step;
 
 function generateMap(params: MapParameters, divID: string) {
   mapSVG = SVG().addTo(divID).size(params.dimension[0], params.dimension[1]);
@@ -48,7 +50,9 @@ function runSearch(elevationMap: NumberMap) {
   if (!end) return;
   const result = search(start, getGoal(end), graph, getCanConnect(start, end));
   if (!result) return;
-  const points = result.map((n) => [n.x * step, n.y * step] as [number, number]);
+  const points = result.map((n) => {
+    return { x: getScreenPos(n.x), y: getScreenPos(n.y) };
+  });
   const path = createPath(points, () => {
     return Math.random() * 0.3 + 0.05;
   });

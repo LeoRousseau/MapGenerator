@@ -1,11 +1,15 @@
-type Point = [number, number];
+interface Point {
+  x: number;
+  y: number;
+}
 
-const line = (pointA: Point, pointB: Point): { length: number; angle: number } => {
-  const lengthX = pointB[0] - pointA[0];
-  const lengthY = pointB[1] - pointA[1];
+const getLineData = (from: Point, to: Point): { length: number; angle: number } => {
+  const x_diff = to.x - from.x;
+  const y_diff = to.y - from.y;
+
   return {
-    length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
-    angle: Math.atan2(lengthY, lengthX),
+    length: Math.sqrt(Math.pow(x_diff, 2) + Math.pow(y_diff, 2)),
+    angle: Math.atan2(y_diff, x_diff),
   };
 };
 
@@ -16,38 +20,25 @@ const getControlPoint = (
   next: Point,
   reverse: boolean
 ): Point => {
-  // Replace 'previous' and 'next' with 'current'
-  // if they don't exist
-  // (when 'current' is the first or last point of the array)
-  const p = previous || current;
-  const n = next || current;
+  const data = getLineData(previous || current, next || current);
+  const angle = data.angle + (reverse ? Math.PI : 0);
+  const length = data.length * smoothness();
+  const x = current.x + Math.cos(angle) * length;
+  const y = current.y + Math.sin(angle) * length;
 
-  // properties of the line between previous and next
-  const l = line(p, n);
-
-  // If is end-control-point, add PI to the angle to go backward
-  const angle = l.angle + (reverse ? Math.PI : 0);
-  const length = l.length * smoothness();
-
-  // The control point position is relative to the current point
-  const x = current[0] + Math.cos(angle) * length;
-  const y = current[1] + Math.sin(angle) * length;
-
-  return [x, y];
+  return { x, y };
 };
 
 const createBezier = (point: Point, i: number, a: Point[], smoothness: () => number): string => {
-  // start control point
-  const [cpsX, cpsY] = getControlPoint(smoothness, a[i - 1], a[i - 2], point, false);
-  // end control point
-  const [cpeX, cpeY] = getControlPoint(smoothness, point, a[i - 1], a[i + 1], true);
+  const start = getControlPoint(smoothness, a[i - 1], a[i - 2], point, false);
+  const end = getControlPoint(smoothness, point, a[i - 1], a[i + 1], true);
 
-  return `C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point[0]},${point[1]}`;
+  return `C ${start.x},${start.y} ${end.x},${end.y} ${point.x},${point.y}`;
 };
 
 const writePath = (points: Point[], smoothness: () => number) => {
   return points.reduce(
-    (acc, point, i, a) => (i === 0 ? `M ${point[0]},${point[1]}` : `${acc} ${createBezier(point, i, a, smoothness)}`),
+    (acc, point, i, a) => (i === 0 ? `M ${point.x},${point.y}` : `${acc} ${createBezier(point, i, a, smoothness)}`),
     ""
   );
 };
