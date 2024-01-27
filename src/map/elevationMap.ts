@@ -1,8 +1,9 @@
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
+import { NumberMap } from "../types";
 
-export function create(width: number, height: number): number[][] {
+export function create(width: number, height: number): NumberMap {
   const noise2D = createNoise2D();
-  let elevationMap: number[][] = [];
+  let elevationMap: NumberMap = [];
   for (let x = 0; x < width; x++) {
     elevationMap[x] = [];
     for (let y = 0; y < height; y++) {
@@ -11,6 +12,18 @@ export function create(width: number, height: number): number[][] {
   }
   return elevationMap;
 }
+
+export function createEmpty(size: number): NumberMap {
+  let result: NumberMap = [];
+  for (let x = 0; x < size; x++) {
+    result[x] = [];
+    for (let y = 0; y < size; y++) {
+      result[x][y] = 0;
+    }
+  }
+  return result;
+}
+
 
 function getNoiseValue(x: number, y: number, origin: [number, number], noise: NoiseFunction2D, size: number) {
   const NoiseScale = 1;
