@@ -27,8 +27,8 @@ function generateMap(params: MapParameters, divID: string) {
   islands.forEach((m, i) => {
     const seaLevel = getBorders(binarizeMap(m, 0));
     const points = runSearch(seaLevel);
-    displayElevationMap(m);
-    displayPath(points, colors[i]);
+    displayElevationMap(seaLevel, colors[i]);
+    displayPath(points, colors[i] + "a0");
   });
 }
 
@@ -55,10 +55,13 @@ function runSearch(elevationMap: NumberMap): { x: number; y: number }[] {
   const start = graph.grid[pair[0]][pair[1]];
   const end = graph.getNeighbours(start).find((n) => n.cellValue > 0);
   if (!end) return [];
+  console.log("start and end : " , start, end);
   const result = search(start, getGoal(end), graph, getCanConnect(start, end));
+  console.log(result)
   const points = result.map((n) => {
     return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
   });
+  console.log("path length : ", points.length);
   return points;
 }
 

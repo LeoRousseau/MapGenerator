@@ -10,6 +10,7 @@ export function search(start: Node, isGoal: successFunction, graph: Graph, canCo
 
   const newNodes =  graph.getNeighbours(start);
   const nodeQueue = newNodes.filter((n) => !n.hasBeenVisited && canConnect(start, n));
+  nodeQueue.forEach(n => n.setPrevious(start)) 
   while (nodeQueue.length > 0) {
     const currentNode = nodeQueue.shift();
     if (!currentNode) return [];
