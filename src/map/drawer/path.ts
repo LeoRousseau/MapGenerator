@@ -6,5 +6,5 @@ export function draw(points: Point[], color: string) {
     const path = createPath(points, () => {
         return Math.random() * 0.3 + 0.05;
       });
-      Renderer.getSVG().path(path).fill(color);
+      Renderer.getSVG().path(path).fill(color).stroke({color:"#000000a0", width: 4});
 }

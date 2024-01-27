@@ -31,8 +31,8 @@ function generateMap(params: MapParameters) {
   islands.forEach((m, i) => {
     const seaLevel = Border.get(binarizeMap(m, 0));
     const points = runSearch(seaLevel);
-    Map.draw(seaLevel, step, colors[i]);
-    Path.draw(points, "#000000a0");
+    //Map.draw(seaLevel, step, colors[i]);
+    Path.draw(points, colors[i]);
   });
 }
 
@@ -49,5 +49,7 @@ function runSearch(elevationMap: NumberMap): Point[] {
   const points = result.map((n) => {
     return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
   });
+
+  points.push({ x: points[0].x, y: points[0].y });
   return points;
 }
