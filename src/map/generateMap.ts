@@ -10,13 +10,14 @@ import * as Background from "./drawer/background";
 import * as Path from "./drawer/path";
 import * as Map from "./drawer/map";
 import { Node } from "../graph-search/bfs/node";
+import { generateRivers } from "./water/rivers";
 
 window.addEventListener("load", (e) => {
   console.log("page is fully loaded");
   generateMap({ dimension: [1000, 1000] });
 });
 
-const colors = ["#F1A6A6", "#E8BC23", "#4AD583", "#4ABCD5", "#614AD5"];
+const colors = ["#CDCF6A", "#9AB875", "#4AD583", "#4ABCD5", "#614AD5"];
 const step = 5;
 
 const getScreenPos = (pos: number) => (pos + 0.5) * step;
@@ -32,7 +33,13 @@ function generateMap(params: MapParameters) {
     const seaLevel = Border.get(binarizeMap(m, 0));
     const points = runSearch(seaLevel);
     //Map.draw(seaLevel, step, colors[i]);
-    Path.draw(points, colors[i]);
+    Path.draw(points, colors[i], "#000000a0");
+    const rivers = generateRivers(m).map((ar) =>
+      ar.map((n) => {
+        return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
+      })
+    );
+    rivers.forEach((r) => Path.draw(r, undefined, "#73B2BF"));
   });
 }
 

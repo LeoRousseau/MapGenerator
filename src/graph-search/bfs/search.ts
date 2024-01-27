@@ -4,8 +4,9 @@ import { Node } from "./node";
 
 export type successFunction = (node: Node) => boolean;
 export type connectFunction = (from: Node, to: Node) => boolean;
+export type sortFunction = (a: Node, b: Node) => number;
 
-export function search(start: Node, isGoal: successFunction, graph: Graph, canConnect: connectFunction): Node[] {
+export function search(start: Node, isGoal: successFunction, graph: Graph, canConnect: connectFunction, sort?:sortFunction): Node[] {
   start.setVisited(true);
 
   const newNodes =  graph.getNeighbours(start);
@@ -22,6 +23,7 @@ export function search(start: Node, isGoal: successFunction, graph: Graph, canCo
       const validNodes = newNodes.filter((n) => !n.hasBeenVisited && canConnect(currentNode, n) && !nodeQueue.includes(n));
       validNodes.forEach((n) => n.setPrevious(currentNode));
       nodeQueue.push(...validNodes);
+      if (sort) nodeQueue.sort(sort);
     }
   }
   return [];
