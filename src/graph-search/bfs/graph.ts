@@ -31,7 +31,7 @@ export class Graph {
   getNeighbours(node: Node): Node[] {
     const x = node.x;
     const y = node.y;
-    const offsets = this.useDiagonal ? [...diagonalOffsets , ...defaultOffsets] : defaultOffsets;
+    const offsets = this.useDiagonal ? [...diagonalOffsets, ...defaultOffsets] : defaultOffsets;
     const coords = offsets.map((o) => [x + o[0], y + o[1]]);
     const validCoord = coords.filter((c) => c[0] < this.size_x && c[0] >= 0 && c[1] < this.size_y && c[1] >= 0);
     return validCoord.map((c) => this.grid[c[0]][c[1]]);
@@ -39,5 +39,16 @@ export class Graph {
 
   hasNonVisitedNode(): boolean {
     return this.grid.flat().some((n) => !n.hasBeenVisited);
+  }
+
+  findPoint(condition: (node: Node) => boolean = (n) => true): Node | undefined {
+    for (let x = 0; x < this.grid.length; x++) {
+      for (let y = 0; y < this.grid[x].length; y++) {
+        if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
+          return this.grid[x][y];
+        }
+      }
+    }
+    return undefined;
   }
 }

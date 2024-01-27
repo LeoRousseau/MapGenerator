@@ -4,11 +4,12 @@ import { binarizeMap, getFilteredMap } from "./mapUtils";
 import { createGraph, search } from "../graph-search/bfs/search";
 import { getCanConnect, getGoal } from "../graph-search/bfs/borderFunctions";
 import { splitMapByIslands } from "./island/extractIslands";
-import * as Border from './border'
-import * as Renderer from './drawer/renderer'
-import * as Background from './drawer/background'
-import * as Path from './drawer/path'
-import * as Map from './drawer/map'
+import * as Border from "./border";
+import * as Renderer from "./drawer/renderer";
+import * as Background from "./drawer/background";
+import * as Path from "./drawer/path";
+import * as Map from "./drawer/map";
+import { Node } from "../graph-search/bfs/node";
 
 window.addEventListener("load", (e) => {
   console.log("page is fully loaded");
@@ -30,24 +31,23 @@ function generateMap(params: MapParameters) {
   islands.forEach((m, i) => {
     const seaLevel = Border.get(binarizeMap(m, 0));
     const points = runSearch(seaLevel);
-    Map.draw(seaLevel, step, colors[i])
-    Path.draw(points, colors[i] + "a0");
+    Map.draw(seaLevel, step, colors[i]);
+    Path.draw(points, "#000000a0");
   });
 }
 
-
 function runSearch(elevationMap: NumberMap): Point[] {
   const graph = createGraph(elevationMap);
-  const pair = Border.findPoint(elevationMap);
-  const start = graph.grid[pair[0]][pair[1]];
+  const condition = (n: Node) => {
+    return graph.getNeighbours(n).length > 1;
+  };
+  const start = graph.findPoint(condition);
+  if (!start) return [];
   const end = graph.getNeighbours(start).find((n) => n.cellValue > 0);
   if (!end) return [];
-  console.log("start and end : " , start, end);
   const result = search(start, getGoal(end), graph, getCanConnect(start, end));
-  console.log(result)
   const points = result.map((n) => {
     return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
   });
-  console.log("path length : ", points.length);
   return points;
 }
