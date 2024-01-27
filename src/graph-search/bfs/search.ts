@@ -27,7 +27,7 @@ export function search(start: Node, isGoal: successFunction, graph: Graph, canCo
   return [];
 }
 
-export function createGraph(map: NumberMap): Graph {
+export function createGraph(map: NumberMap, useDiagonal = true): Graph {
   const result: Node[][] = [];
   for (let x = 0; x < map.length; x++) {
     result[x] = [];
@@ -35,5 +35,5 @@ export function createGraph(map: NumberMap): Graph {
       result[x][y] = new Node(map[x][y], x, y);
     }
   }
-  return new Graph(result, true);
+  return new Graph(result, useDiagonal);
 }

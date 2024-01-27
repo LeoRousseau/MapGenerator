@@ -3,11 +3,10 @@ import { Node } from "../../graph-search/bfs/node";
 import { createGraph, search } from "../../graph-search/bfs/search";
 import { NumberMap } from "../../types";
 import * as ElevationMap from "../elevationMap";
-import * as Border from "../border";
 
 export function splitMapByIslands(elevationMap: NumberMap): NumberMap[] {
   const result: NumberMap[] = [];
-  const graph = createGraph(elevationMap);
+  const graph = createGraph(elevationMap, false);
   let i = 0;
   while (i < 4) {
     const start = graph.findPoint();
