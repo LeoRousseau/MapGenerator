@@ -1,7 +1,7 @@
 export class Node {
   private _previous: Node | null = null;
+  private _cellValue: number;
 
-  readonly cellValue: number;
   readonly x: number;
   readonly y: number;
 
@@ -15,8 +15,12 @@ export class Node {
     return this._previous;
   }
 
+  get cellValue(): number {
+    return this._cellValue;
+  }
+
   constructor(value: number, x: number, y: number) {
-    this.cellValue = value;
+    this._cellValue = value;
     this.x = x;
     this.y = y;
   }
@@ -27,6 +31,10 @@ export class Node {
 
   setVisited(value: boolean) {
     this._hasBeenVisited = value;
+  }
+
+  setValue(value:number) {
+    this._cellValue = value;
   }
 
   reconstructPath(): Node[] {

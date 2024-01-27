@@ -4,7 +4,7 @@ import { Node } from "./node";
 const getCanConnectFn =
   (start: Node, goal: Node) =>
   (from: Node, to: Node): boolean => {
-    return (from !== start || to !== goal) && to.cellValue > 0;
+    return (from !== start || to !== goal) && to._cellValue > 0;
   };
 
 const getNodeGoalFn =

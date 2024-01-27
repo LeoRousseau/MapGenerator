@@ -1,18 +1,18 @@
-import { NumberMap } from "../types";
+import { NumberMap } from "../../types";
 import { Graph } from "./graph";
 import { Node } from "./node";
 
 export type successFunction = (node: Node) => boolean;
 export type connectFunction = (from: Node, to: Node) => boolean;
 
-export function search(start: Node, isGoal: successFunction, graph: Graph, canConnect: connectFunction): Node[] | undefined {
+export function search(start: Node, isGoal: successFunction, graph: Graph, canConnect: connectFunction): Node[] {
   start.setVisited(true);
 
   const newNodes =  graph.getNeighbours(start);
   const nodeQueue = newNodes.filter((n) => !n.hasBeenVisited && canConnect(start, n));
   while (nodeQueue.length > 0) {
     const currentNode = nodeQueue.shift();
-    if (!currentNode) return undefined;
+    if (!currentNode) return [];
     currentNode.setVisited(true);
     if (isGoal(currentNode)) {
       return currentNode.reconstructPath();
@@ -23,7 +23,7 @@ export function search(start: Node, isGoal: successFunction, graph: Graph, canCo
       nodeQueue.push(...validNodes);
     }
   }
-  return undefined;
+  return [];
 }
 
 export function createGraph(map: NumberMap): Graph {
