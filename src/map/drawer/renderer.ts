@@ -1,6 +1,6 @@
 import { SVG, Svg } from "@svgdotjs/svg.js";
 
-const divID = "#app" ;
+const divID = "#canvas" ;
 let mapSVG: Svg;
 
 export function initialize(width: number, height: number) {

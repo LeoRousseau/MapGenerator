@@ -12,10 +12,6 @@ import * as Map from "./drawer/map";
 import { Node } from "../graph-search/node";
 import { filterPeaks, generateRivers } from "./water/rivers";
 
-window.addEventListener("load", (e) => {
-  console.log("page is fully loaded");
-  generateMap({ dimension: [1000, 1000] });
-});
 
 const colors = ["#CDCF6A", "#9AB875", "#4AD583", "#4ABCD5", "#614AD5"];
 const step = 5;
@@ -23,7 +19,7 @@ const step = 5;
 const getScreenPos = (pos: number) => (pos + 0.5) * step;
 const randomizePos = (pos: number) => pos + (Math.random() - 0.5) / 1.5; // to adjust
 
-function generateMap(params: MapParameters) {
+export function generateMap(params: MapParameters) {
   Renderer.initialize(params.dimension[0], params.dimension[1]);
   Background.draw(params.dimension[0], params.dimension[1]);
   const elevationMap = ElevationMap.create(params.dimension[0] / step, params.dimension[0] / step);
@@ -35,7 +31,7 @@ function generateMap(params: MapParameters) {
     //Map.draw(seaLevel, step, colors[i]);
    // Map.drawElevation(m, step);
     Path.draw(points, colors[i], "#000000a0");
-    //Map.drawGraph(filterPeaks(m), step, "#89F590");
+    Map.drawGraph(filterPeaks(m), step, "#89F590");
     const rivers = generateRivers(m).map((ar) =>
       ar.map((n) => {
         return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };

@@ -1,0 +1,20 @@
+#root {
+  max-width: 1500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.global-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#canvas {
+  border: solid black;
+}
+
+.ui {
+  width: 500px;
+  height: 1000px;
+  background-color: red;
+}
