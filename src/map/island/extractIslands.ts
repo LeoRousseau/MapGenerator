@@ -1,6 +1,6 @@
-import { Graph } from "../../graph-search/bfs/graph";
-import { Node } from "../../graph-search/bfs/node";
-import { createGraph, search } from "../../graph-search/bfs/search";
+import { Graph } from "../../graph-search/graph";
+import { Node } from "../../graph-search/node";
+import { createGraph, search } from "../../graph-search/search";
 import { NumberMap } from "../../types";
 import * as ElevationMap from "../elevationMap";
 

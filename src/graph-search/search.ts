@@ -1,4 +1,4 @@
-import { NumberMap } from "../../types";
+import { NumberMap } from "../types";
 import { Graph } from "./graph";
 import { Node } from "./node";
 

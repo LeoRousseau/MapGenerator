@@ -1,6 +1,6 @@
-import { createGraph, search } from "../../graph-search/bfs/search";
+import { createGraph, search } from "../../graph-search/search";
 import { NumberMap, Point } from "../../types";
-import { Node } from "../../graph-search/bfs/node";
+import { Node } from "../../graph-search/node";
 
 function generateSource(islandMap: NumberMap): Point[] {
   const result = [];

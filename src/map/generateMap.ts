@@ -1,15 +1,15 @@
 import { MapParameters, NumberMap, Point } from "../types";
 import * as ElevationMap from "./elevationMap";
 import { binarizeMap, getFilteredMap } from "./mapUtils";
-import { createGraph, search } from "../graph-search/bfs/search";
-import { getCanConnect, getGoal } from "../graph-search/bfs/borderFunctions";
+import { createGraph, search } from "../graph-search/search";
+import { getCanConnect, getGoal } from "../graph-search/borderFunctions";
 import { splitMapByIslands } from "./island/extractIslands";
 import * as Border from "./border";
 import * as Renderer from "./drawer/renderer";
 import * as Background from "./drawer/background";
 import * as Path from "./drawer/path";
 import * as Map from "./drawer/map";
-import { Node } from "../graph-search/bfs/node";
+import { Node } from "../graph-search/node";
 import { generateRivers } from "./water/rivers";
 
 window.addEventListener("load", (e) => {
