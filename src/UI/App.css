@@ -1,11 +1,11 @@
 #root {
   margin: 0 auto;
   text-align: center;
-  --background: #f2f7f9;
+  --background: #ffffff;
   --black: #343434;
-  --primary:#49BC8F;
-  background-color: var(--background);
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+  --primary:#3084a0;
+  --primary-select:#86B6F6;
+
 }
 
 .global-container {
@@ -21,4 +21,5 @@
   width: 100%;
   height: 1000px;
   margin-left: 8px;
+  background-color: var(--background);
 }
