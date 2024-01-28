@@ -1,0 +1,14 @@
+.button-container {
+  flex: 1;
+  padding: 6px;
+  font-family: "Rubik", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--black);
+  font-weight: bold;
+  user-select: none;
+}
+
+.button-container:hover {
+  color: var(--primary);
+}
