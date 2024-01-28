@@ -8,5 +8,5 @@ export function draw(points: Point[], fillColor?: string, strokeColor?: string) 
   });
   const pathSVG = Renderer.getSVG().path(path);
   pathSVG.fill(fillColor ? fillColor : "#00000000");
-  if (strokeColor) pathSVG.stroke({ color: strokeColor, width: 4 });
+  if (strokeColor) pathSVG.stroke({ color: strokeColor, width: 3 });
 }

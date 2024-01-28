@@ -10,7 +10,7 @@ import * as Background from "./drawer/background";
 import * as Path from "./drawer/path";
 import * as Map from "./drawer/map";
 import { Node } from "../graph-search/node";
-import { generateRivers } from "./water/rivers";
+import { filterPeaks, generateRivers } from "./water/rivers";
 
 window.addEventListener("load", (e) => {
   console.log("page is fully loaded");
@@ -33,7 +33,9 @@ function generateMap(params: MapParameters) {
     const seaLevel = Border.get(binarizeMap(m, 0));
     const points = runSearch(seaLevel);
     //Map.draw(seaLevel, step, colors[i]);
+   // Map.drawElevation(m, step);
     Path.draw(points, colors[i], "#000000a0");
+    //Map.drawGraph(filterPeaks(m), step, "#89F590");
     const rivers = generateRivers(m).map((ar) =>
       ar.map((n) => {
         return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
