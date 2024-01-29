@@ -1,0 +1,25 @@
+.tab {
+  display: flex;
+  flex-direction: row;
+  gap: 8px  ;
+  cursor: pointer;
+  padding: 7px 20px;
+  border: 1px solid #ddd;
+  background-color: rgb(250, 250, 250);
+  color: var(--black);
+  font-weight: bold;
+  user-select: none;
+  font-family: "Rubik", sans-serif;
+  font-size: 14px;
+}
+
+.tab.active {
+  border: none;
+  background-color: white;
+  color: var(--primary);
+}
+
+.tab-content {
+  padding: 10px;
+  height: 100%;
+}

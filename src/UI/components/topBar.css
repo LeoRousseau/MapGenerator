@@ -11,7 +11,7 @@
 }
 
 .topbar-delimiter {
-    width: 1px;
-    background: whitesmoke;
+    width: 2px;
+    background: rgb(220, 220, 220);
     height: 20px;
 }
