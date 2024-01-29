@@ -3,7 +3,7 @@
   flex-direction: row;
   gap: 8px  ;
   cursor: pointer;
-  padding: 7px 20px;
+  padding: 7px 16px;
   border: 1px solid #ddd;
   background-color: rgb(250, 250, 250);
   color: var(--black);
@@ -11,6 +11,11 @@
   user-select: none;
   font-family: "Rubik", sans-serif;
   font-size: 14px;
+}
+
+.tab svg  {
+  width: 16px;;
+  height: 16px;
 }
 
 .tab.active {
