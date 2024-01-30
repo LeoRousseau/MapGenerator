@@ -2,11 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './UI/App.tsx'
 import { generateMap } from './map/generateMap.ts';
+import * as Renderer from './map/drawer/renderer.ts'
 
 window.addEventListener("load", () => {
   console.log("page is fully loaded");
   setTimeout(() => {
-    generateMap({ dimension: [1000, 1000] });
+    Renderer.initialize(1000, 1000);
+    generateMap();
   }, 10);
 
 });

@@ -1,4 +1,4 @@
-import { MapParameters, NumberMap, Point } from "../types";
+import { NumberMap, Point } from "../types";
 import * as ElevationMap from "./elevationMap";
 import { binarizeMap, getFilteredMap } from "./mapUtils";
 import { createGraph, search } from "../graph-search/search";
@@ -19,10 +19,12 @@ const step = 5;
 const getScreenPos = (pos: number) => (pos + 0.5) * step;
 const randomizePos = (pos: number) => pos + (Math.random() - 0.5) / 1.5; // to adjust
 
-export function generateMap(params: MapParameters) {
-  Renderer.initialize(params.dimension[0], params.dimension[1]);
-  Background.draw(params.dimension[0], params.dimension[1]);
-  const elevationMap = ElevationMap.create(params.dimension[0] / step, params.dimension[0] / step);
+
+export function generateMap() {
+  Renderer.clear();
+  const dim = Renderer.getDimension();
+  Background.draw(dim.width, dim.height);
+  const elevationMap = ElevationMap.create(dim.width / step, dim.height / step);
   const filteredMap = getFilteredMap(elevationMap, 0.1);
   const islands = splitMapByIslands(filteredMap);
   islands.forEach((m, i) => {
