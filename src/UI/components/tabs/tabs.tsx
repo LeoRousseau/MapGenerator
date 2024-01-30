@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Tab } from "./Tab";
 import "./tabs.css";
+import { TabContent } from "./tabContent";
 
 type TabsProps = {
-  tabs: { label: string; Icon: JSX.Element }[];
+  tabs: { label: string; Icon: JSX.Element, Content: React.ComponentType }[];
 };
 
 export function Tabs({ tabs }: TabsProps) {
@@ -20,7 +21,7 @@ export function Tabs({ tabs }: TabsProps) {
           <Tab key={index} label={tab.label} onClick={() => handleTabClick(index)} isActive={index === activeTab} Icon={tab.Icon} />
         ))}
       </div>
-      <div className="tab-content">Tab {activeTab} is Active</div>
+      <TabContent Content={tabs[activeTab].Content}></TabContent>
     </div>
   );
 }

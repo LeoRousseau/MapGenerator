@@ -1,0 +1,9 @@
+.layer-container {
+    padding: 20px;
+}
+
+.layer-array {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
