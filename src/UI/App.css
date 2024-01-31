@@ -3,9 +3,9 @@
   text-align: center;
   --background: #ffffff;
   --black: #343434;
-  --primary:#3084a0;
-  --primary-select:#86B6F6;
-
+  --primary: #3084a0;
+  --primary-select: #86b6f6;
+  --red: #8D2F3C;
 }
 
 .global-container {

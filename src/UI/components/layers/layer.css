@@ -75,3 +75,14 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 6px;
   box-shadow: rgba(225, 228, 232, 0.2) 0px 1px 0px 0px inset;
 }
+
+.layer-item-delete {
+  cursor: pointer;
+  color: grey;
+  padding-top: 8px;
+  margin-right: 4px;
+}
+
+.layer-item-delete:hover {
+  color: var(--red);
+}

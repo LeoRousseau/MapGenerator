@@ -1,9 +1,30 @@
 .layer-container {
-    padding: 20px;
+  padding: 20px 20px;
 }
 
 .layer-array {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.layer-add-button {
+  color: var(--primary);
+  font-weight: bold;
+  user-select: none;
+  font-family: "Rubik", sans-serif;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 2px;
+}
+
+.layer-add-button.disabled {
+  color: grey;
+  background-color: whitesmoke;
+  cursor: default;
 }
