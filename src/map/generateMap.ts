@@ -8,17 +8,22 @@ import * as Border from "./border";
 import * as Renderer from "./drawer/renderer";
 import * as Background from "./drawer/background";
 import * as Path from "./drawer/path";
-import * as Map from "./drawer/map";
 import { Node } from "../graph-search/node";
-import { filterPeaks, generateRivers } from "./water/rivers";
+import { generateRivers } from "./water/rivers";
+import { getCurrentConfig } from "../config";
+import { ElevationLayerData } from "../config/type";
 
+/**
+ * DEBUG LINES
+//Map.draw(seaLevel, step, colors[i]);
+//Map.drawElevation(m, step);
+//Map.drawGraph(filterPeaks(m), step, "#89F590");
+ */
 
-const colors = ["#CDCF6A", "#9AB875", "#4AD583", "#4ABCD5", "#614AD5"];
 const step = 5;
 
 const getScreenPos = (pos: number) => (pos + 0.5) * step;
 const randomizePos = (pos: number) => pos + (Math.random() - 0.5) / 1.5; // to adjust
-
 
 export function generateMap() {
   Renderer.clear();
@@ -28,19 +33,26 @@ export function generateMap() {
   const filteredMap = getFilteredMap(elevationMap, 0.1);
   const islands = splitMapByIslands(filteredMap);
   islands.forEach((m, i) => {
-    const seaLevel = Border.get(binarizeMap(m, 0));
-    const points = runSearch(seaLevel);
-    //Map.draw(seaLevel, step, colors[i]);
-   // Map.drawElevation(m, step);
-    Path.draw(points, colors[i], "#000000a0");
-    Map.drawGraph(filterPeaks(m), step, "#89F590");
-    const rivers = generateRivers(m).map((ar) =>
-      ar.map((n) => {
-        return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
-      })
-    );
-    rivers.forEach((r) => Path.draw(r, undefined, "#73B2BF"));
+    drawLayers(m, getCurrentConfig().islands.colors[i], getCurrentConfig().elevationLayer);
+    drawRivers(m);
   });
+}
+
+function drawLayers(map: NumberMap, islandColor: string, elevationLayers: ElevationLayerData[]) {
+  elevationLayers.forEach((data) => {
+    const seaLevel = Border.get(binarizeMap(map, data.elevation));
+    const points = runSearch(seaLevel);
+    Path.draw(points, islandColor, "#000000a0", data.stroke);
+  });
+}
+
+function drawRivers(map: NumberMap) {
+  const rivers = generateRivers(map).map((ar) =>
+    ar.map((n) => {
+      return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
+    })
+  );
+  rivers.forEach((r) => Path.draw(r, undefined, "#73B2BF"));
 }
 
 function runSearch(elevationMap: NumberMap): Point[] {

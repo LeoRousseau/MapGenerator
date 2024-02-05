@@ -1,3 +1,4 @@
+import { getCurrentConfig } from "../../config";
 import { Graph } from "../../graph-search/graph";
 import { Node } from "../../graph-search/node";
 import { createGraph, search } from "../../graph-search/search";
@@ -8,7 +9,8 @@ export function splitMapByIslands(elevationMap: NumberMap): NumberMap[] {
   const result: NumberMap[] = [];
   const graph = createGraph(elevationMap, false);
   let i = 0;
-  while (i < 4) {
+  while (i < getCurrentConfig().islands.maxCount) {
+    console.log(i)
     const start = graph.findPoint();
     if (start) {
       const map = extractIsland(graph, start);
@@ -44,11 +46,11 @@ function extractMap(graph: Graph, mapToFill: NumberMap): number {
 }
 
 function extractIsland(graph: Graph, start: Node): NumberMap | undefined {
-  const nodes = search(
+  search(
     start,
-    (node) => false,
+    () => false,
     graph,
-    (from, to) => to.cellValue > 0
+    (_from, to) => to.cellValue > 0
   );
   const map = ElevationMap.createEmpty(graph.grid.length);
   const size = extractMap(graph, map);
