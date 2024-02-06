@@ -93,6 +93,7 @@
   color: var(--black);
   border-radius: 2px;
   cursor: pointer;
+  user-select: none;
   line-height: 2.3;
   background-color: white;
 }
