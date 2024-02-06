@@ -12,6 +12,7 @@ import { Node } from "../graph-search/node";
 import { generateRivers } from "./water/rivers";
 import { getCurrentConfig } from "../config";
 import { ElevationLayerData } from "../config/type";
+import { getColor } from "./drawer/color";
 
 /**
  * DEBUG LINES
@@ -42,7 +43,8 @@ function drawLayers(map: NumberMap, islandColor: string, elevationLayers: Elevat
   elevationLayers.forEach((data) => {
     const seaLevel = Border.get(binarizeMap(map, data.elevation));
     const points = runSearch(seaLevel);
-    Path.draw(points, islandColor, "#000000a0", data.stroke);
+    const color = getColor(islandColor, data.color, getCurrentConfig().islands.colorBlending);
+    Path.draw(points, color, "#000000a0", data.stroke);
   });
 }
 

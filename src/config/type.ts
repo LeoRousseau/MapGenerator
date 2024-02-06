@@ -1,9 +1,14 @@
 export type ConfigType = {
-  islands: {
-    maxCount: number;
-    colors: string[];
-  };
+  islands: IslandData;
   elevationLayer: ElevationLayerData[];
+};
+
+export type ColorBlendingMode = "Islands" | "Blend" | "Layers";
+
+export type IslandData = {
+  colorBlending: ColorBlendingMode;
+  maxCount: number;
+  colors: string[];
 };
 
 export type ElevationLayerData = {
