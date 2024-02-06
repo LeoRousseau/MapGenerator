@@ -8,7 +8,6 @@ type TabProps = {
 };
 
 export function Tab({ label, onClick, isActive, Icon }: TabProps) {
-  console.log();
   return (
     <div className={`tab ${isActive ? "active" : ""}`} onClick={onClick}>
       {Icon}

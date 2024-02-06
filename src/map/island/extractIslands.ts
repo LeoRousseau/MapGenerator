@@ -10,7 +10,6 @@ export function splitMapByIslands(elevationMap: NumberMap): NumberMap[] {
   const graph = createGraph(elevationMap, false);
   let i = 0;
   while (i < getCurrentConfig().islands.maxCount) {
-    console.log(i)
     const start = graph.findPoint();
     if (start) {
       const map = extractIsland(graph, start);
