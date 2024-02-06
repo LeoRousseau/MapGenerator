@@ -1,7 +1,7 @@
 import { NumberMap } from "../types";
 
 export function getFilteredMap(elevationMap: NumberMap, threshold: number): NumberMap {
-  let result: NumberMap = [];
+  const result: NumberMap = [];
   for (let x = 0; x < elevationMap.length; x++) {
     result[x] = [];
     for (let y = 0; y < elevationMap[x].length; y++) {
@@ -13,7 +13,7 @@ export function getFilteredMap(elevationMap: NumberMap, threshold: number): Numb
 }
 
 export function binarizeMap(elevationMap: NumberMap, threshold: number) {
-  let result: NumberMap = [];
+  const result: NumberMap = [];
   for (let x = 0; x < elevationMap.length; x++) {
     result[x] = [];
     for (let y = 0; y < elevationMap[x].length; y++) {

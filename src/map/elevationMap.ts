@@ -3,7 +3,7 @@ import { NumberMap } from "../types";
 
 export function create(width: number, height: number): NumberMap {
   const noise2D = createNoise2D();
-  let elevationMap: NumberMap = [];
+  const elevationMap: NumberMap = [];
   for (let x = 0; x < width; x++) {
     elevationMap[x] = [];
     for (let y = 0; y < height; y++) {
@@ -14,7 +14,7 @@ export function create(width: number, height: number): NumberMap {
 }
 
 export function createEmpty(size: number): NumberMap {
-  let result: NumberMap = [];
+  const result: NumberMap = [];
   for (let x = 0; x < size; x++) {
     result[x] = [];
     for (let y = 0; y < size; y++) {

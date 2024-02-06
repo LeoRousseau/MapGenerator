@@ -43,10 +43,17 @@
   text-align: center;
 }
 
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
        -webkit-appearance: none;
         margin: 0;
+}
+
+input[type=number]:disabled {
+  cursor: default;
+  background-color: whitesmoke;
+  color: gray;
 }
 
 input[type=number] {
@@ -83,6 +90,17 @@ input[type="color"]::-webkit-color-swatch {
   margin-right: 4px;
 }
 
+.layer-item-delete.disabled {
+  cursor: default;
+  color: rgb(181, 181, 181);
+}
+
+.layer-item-delete.disabled:hover {
+  cursor: default;
+  color: rgb(181, 181, 181);
+}
+
 .layer-item-delete:hover {
   color: var(--red);
 }
+
