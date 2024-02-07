@@ -23,3 +23,7 @@ export function binarizeMap(elevationMap: NumberMap, threshold: number) {
 
   return result;
 }
+
+export function cloneMap(source: NumberMap): NumberMap {
+  return Array.from(source, (row) => [...row]);
+}

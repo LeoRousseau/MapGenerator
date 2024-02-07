@@ -2,6 +2,8 @@ import { createGraph, search } from "../../graph-search/search";
 import { NumberMap, Point } from "../../types";
 import { Node } from "../../graph-search/node";
 import { Graph } from "../../graph-search/graph";
+import { getPointsFromNodes } from "../pathSmoother";
+import * as Path from "../drawer/path";
 
 function getPeaks(islandMap: NumberMap): Node[] {
   const graph = filterPeaks(islandMap);
@@ -37,11 +39,14 @@ function createRiver(source: Point, islandMap: NumberMap): Node[] {
   return path;
 }
 
-export function generateRivers(islandMap: NumberMap, maxNumber = 5): Point[][] {
-  const sources = getPeaks(islandMap).sort((a,b) => Math.random() - 0.5).slice(0, maxNumber);
-  return sources.map((v) =>
-    createRiver(v, islandMap).map((n) => {
-      return { x: n.x, y: n.y };
-    })
-  );
+function generateRivers(islandMap: NumberMap, maxNumber = 5): Node[][] {
+  const sources = getPeaks(islandMap)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, maxNumber);
+  return sources.map((v) => createRiver(v, islandMap));
+}
+
+export function drawRivers(map: NumberMap) {
+  const rivers = generateRivers(map).map((ar) => getPointsFromNodes(ar));
+  rivers.forEach((r) => Path.draw(r, undefined, "#73B2BF"));
 }

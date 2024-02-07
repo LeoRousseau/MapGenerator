@@ -1,3 +1,6 @@
+import { getScreenPos, randomizePos } from "./generateMap";
+import { Node } from '../graph-search/node'
+
 interface Point {
   x: number;
   y: number;
@@ -45,4 +48,10 @@ const writePath = (points: Point[], smoothness: () => number) => {
 
 export function createPath(points: Point[], smoothness: () => number) {
   return writePath(points, smoothness);
+}
+
+export function getPointsFromNodes(nodes: Node[]): Point[] {
+  return nodes.map((n) => {
+    return { x: getScreenPos(randomizePos(n.x)), y: getScreenPos(randomizePos(n.y)) };
+  });
 }

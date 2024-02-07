@@ -11,7 +11,7 @@ export function getColor(island: string, layer: string, blendingMode: ColorBlend
   }
 }
 
-function blendColors(color1: string, color2: string) {
+export function blendColors(color1: string, color2: string) {
   if (color1.length == 4) color1 = color1[1] + color1[1] + color1[2] + color1[2] + color1[3] + color1[3];
   else color1 = color1.substring(1);
   if (color2.length == 4) color2 = color2[1] + color2[1] + color2[2] + color2[2] + color2[3] + color2[3];
@@ -36,4 +36,8 @@ function toHex(num: number): string {
   let hex = Math.round(num).toString(16);
   if (hex.length == 1) hex = "0" + hex;
   return hex;
+}
+
+export function createFromNumber(n: number): string {
+  return "#" + toHex(n) + toHex(n) + toHex(n);
 }

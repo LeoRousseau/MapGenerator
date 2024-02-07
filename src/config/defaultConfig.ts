@@ -2,7 +2,7 @@ import { ConfigType } from "./type";
 
 export const defaultConfig: ConfigType = {
   islands: {
-    colorBlending: "Islands",
+    colorBlending: "Blend",
     maxCount: 5,
     colors: [
       "#CDCF6A",
@@ -27,6 +27,11 @@ export const defaultConfig: ConfigType = {
       elevation: 0.3,
       color: "#74E460",
       stroke: 2,
+    },
+    {
+      elevation: 0.5,
+      color: "#96BEB0",
+      stroke: 1,
     },
   ],
 };
