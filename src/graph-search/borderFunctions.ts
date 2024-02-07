@@ -1,10 +1,12 @@
 import { successFunction } from "./search";
 import { Node } from "./node";
 
+const minimumPathLength = 10;
+
 const getCanConnectFn =
   (start: Node, goal: Node) =>
   (from: Node, to: Node): boolean => {
-    return ((from !== start && from.previousNode !== start) || to !== goal) && to.cellValue > 0;
+    return (to !== goal || from.reconstructPath().length > minimumPathLength) && to.cellValue > 0;
   };
 
 const getNodeGoalFn =
