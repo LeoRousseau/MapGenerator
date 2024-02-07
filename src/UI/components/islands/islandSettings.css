@@ -16,7 +16,6 @@
 
 .slider p {
   font-weight: bold;
-  font-family: "Rubik", sans-serif;
   font-size: 16px;
   padding-left: 10px;
   color: var(--primary);
@@ -42,7 +41,6 @@
 }
 
 .slider-label {
-  font-family: "Rubik", sans-serif;
   font-size: 16px;
   padding-right: 50px;
 }
@@ -62,7 +60,6 @@
 }
 
 .color-title {
-  font-family: "Rubik", sans-serif;
   font-size: 16px;
   color: var(--primary);
 }
@@ -86,7 +83,6 @@
 }
 
 .mode-option {
-  font-family: "Rubik", sans-serif;
   font-size: 14px;
   width: 80px;
   height: 35px;
