@@ -10,12 +10,26 @@ import { createGraph, search } from "../../graph-search/search";
 import { Node } from "../../graph-search/node";
 import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
 import { getPointsFromNodes } from "../pathSmoother";
+import { drawElevation } from "../drawer/map";
 
-export function generateLayers(source: NumberMap, datas: ElevationLayerData[], islandColor: string) {
-  generateLayer(source, datas, 0, islandColor);
+type onLayerCreatedFn = (source: NumberMap) => void;
+
+export function generateLayers(
+  source: NumberMap,
+  datas: ElevationLayerData[],
+  islandColor: string,
+  onIslandCreated: onLayerCreatedFn
+) {
+  generateLayer(source, datas, 0, islandColor, onIslandCreated);
 }
 
-function generateLayer(source: NumberMap, datas: ElevationLayerData[], index: number, islandColor: string) {
+function generateLayer(
+  source: NumberMap,
+  datas: ElevationLayerData[],
+  index: number,
+  islandColor: string,
+  onLayerCreated?: onLayerCreatedFn
+) {
   if (index >= datas.length) return;
 
   const data = datas[index];
@@ -23,7 +37,9 @@ function generateLayer(source: NumberMap, datas: ElevationLayerData[], index: nu
   clusters.forEach((cluster) => {
     const points = getPointsFromMap(cluster, data.elevation);
     const color = getColor(islandColor, data.color, getCurrentConfig().islands.colorBlending);
+    drawElevation(cluster, 5)
     Path.draw(points, color, "#000000a0", data.stroke);
+    onLayerCreated && onLayerCreated(cluster);
     generateLayer(cluster, datas, index + 1, islandColor);
   });
 }
@@ -50,10 +66,13 @@ function runSearch(elevationMap: NumberMap): Point[] {
   if (!end) return [];
 
   const result = search(start, getGoal(end), graph, getCanConnect(start, end));
-  const points = getPointsFromNodes(result);
 
+  if (result.length === 0) {
+    console.error("No path found in graph");
+    return [];
+  }
+
+  const points = getPointsFromNodes(result);
   points.push({ x: points[0].x, y: points[0].y });
   return points;
 }
-
-
