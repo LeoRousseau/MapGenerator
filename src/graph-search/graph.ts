@@ -41,7 +41,7 @@ export class Graph {
     return this.grid.flat().some((n) => !n.hasBeenVisited);
   }
 
-  findPoint(condition: (node: Node) => boolean = (n) => true): Node | undefined {
+  findPoint(condition: (node: Node) => boolean = () => true): Node | undefined {
     for (let x = 0; x < this.grid.length; x++) {
       for (let y = 0; y < this.grid[x].length; y++) {
         if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
