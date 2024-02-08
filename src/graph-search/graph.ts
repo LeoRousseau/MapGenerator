@@ -41,14 +41,33 @@ export class Graph {
     return this.grid.flat().some((n) => !n.hasBeenVisited);
   }
 
-  findPoint(condition: (node: Node) => boolean = () => true): Node | undefined {
-    for (let x = 0; x < this.grid.length; x++) {
-      for (let y = 0; y < this.grid[x].length; y++) {
-        if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
-          return this.grid[x][y];
+  findPoint(condition: (node: Node) => boolean = () => true, reverse = false): Node | undefined {
+    if (reverse) {
+      for (let x = this.grid.length - 1; x > 0; x--) {
+        for (let y = this.grid.length - 1; y > 0; y--) {
+          if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
+            return this.grid[x][y];
+          }
+        }
+      }
+    } else {
+      for (let x = 0; x < this.grid.length; x++) {
+        for (let y = 0; y < this.grid[x].length; y++) {
+          if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
+            return this.grid[x][y];
+          }
         }
       }
     }
+
     return undefined;
+  }
+
+  reset() {
+    for (let x = 0; x < this.grid.length; x++) {
+      for (let y = 0; y < this.grid[x].length; y++) {
+        this.grid[x][y].reset();
+      }
+    }
   }
 }

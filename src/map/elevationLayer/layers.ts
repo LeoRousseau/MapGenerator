@@ -11,6 +11,7 @@ import { Node } from "../../graph-search/node";
 import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
 import { getPointsFromNodes } from "../pathSmoother";
 import { drawElevation } from "../drawer/map";
+import { Graph } from "../../graph-search/graph";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
 
@@ -37,7 +38,7 @@ function generateLayer(
   clusters.forEach((cluster) => {
     const points = getPointsFromMap(cluster, data.elevation);
     const color = getColor(islandColor, data.color, getCurrentConfig().islands.colorBlending);
-    drawElevation(cluster, 5)
+    drawElevation(cluster, 5);
     Path.draw(points, color, "#000000a0", data.stroke);
     onLayerCreated && onLayerCreated(cluster);
     generateLayer(cluster, datas, index + 1, islandColor);
@@ -55,24 +56,34 @@ function getPointsFromMap(source: NumberMap, elevation: number) {
 
 function runSearch(elevationMap: NumberMap): Point[] {
   const graph = createGraph(elevationMap);
-  const condition = (n: Node) => {
-    return graph.getNeighbours(n).length > 1;
-  };
-
-  const start = graph.findPoint(condition);
-  if (!start) return [];
-
-  const end = graph.getNeighbours(start).find((n) => n.cellValue > 0);
-  if (!end) return [];
-
-  const result = search(start, getGoal(end), graph, getCanConnect(start, end));
+  let result = getPath(graph, false);
+  if (result.length < 10) {
+    // TODO : condition to define
+    graph.reset();
+    result = getPath(graph, true);
+  }
 
   if (result.length === 0) {
-    console.error("No path found in graph");
+    console.warn("No path found in graph");
     return [];
   }
 
   const points = getPointsFromNodes(result);
   points.push({ x: points[0].x, y: points[0].y });
   return points;
+}
+
+function getPath(graph: Graph, reverse: boolean): Node[] {
+  const condition = (n: Node) => {
+    return graph.getNeighbours(n).length > 1;
+  };
+
+  const start = graph.findPoint(condition, reverse);
+  if (!start) return [];
+
+  const end = graph.getNeighbours(start).find((n) => n.cellValue > 0);
+  if (!end) return [];
+
+  const result = search(start, getGoal(end), graph, getCanConnect(start, end));
+  return result;
 }

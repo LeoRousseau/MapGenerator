@@ -33,7 +33,7 @@ export class Node {
     this._hasBeenVisited = value;
   }
 
-  setValue(value:number) {
+  setValue(value: number) {
     this._cellValue = value;
   }
 
@@ -49,6 +49,11 @@ export class Node {
   }
 
   toString() {
-    console.log('Node ', this.x, this.y);
+    console.log("Node ", this.x, this.y);
+  }
+
+  reset() {
+    this._hasBeenVisited = false;
+    this._previous = null;
   }
 }
