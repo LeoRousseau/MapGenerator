@@ -1,9 +1,10 @@
 import { createGraph, search } from "../../graph-search/search";
-import { NumberMap, Point } from "../../types";
+import { NumberMap, Point2 } from "../../types";
 import { Node } from "../../graph-search/node";
 import { Graph } from "../../graph-search/graph";
 import { getPointsFromNodes } from "../pathSmoother";
 import * as Path from "../drawer/path";
+import { createThickLine } from "../drawer/thickLine";
 
 function getPeaks(islandMap: NumberMap): Node[] {
   const graph = filterPeaks(islandMap);
@@ -25,7 +26,7 @@ export function filterPeaks(islandMap: NumberMap, threshold = 0.2): Graph {
   return result;
 }
 
-function createRiver(source: Point, islandMap: NumberMap): Node[] {
+function createRiver(source: Point2, islandMap: NumberMap): Node[] {
   const graph = createGraph(islandMap, true);
   const start = graph.grid[source.x][source.y];
   const path = search(
@@ -48,5 +49,13 @@ function generateRivers(islandMap: NumberMap, maxNumber = 5): Node[][] {
 
 export function drawRivers(map: NumberMap) {
   const rivers = generateRivers(map).map((ar) => getPointsFromNodes(ar));
-  rivers.forEach((r) => Path.draw(r, undefined, "#73B2BF"));
+  rivers.filter((r) => r.length > 0).forEach((r) => createRiverPath(r));
+}
+
+function createRiverPath(points: Point2[]) {
+  const points3 = points.map((p, i) => {
+    return { ...p, z: 1 + i / 5 };
+  });
+  const path = createThickLine(points3);
+  Path.draw(path, "#73B2BF", undefined, undefined, false);
 }

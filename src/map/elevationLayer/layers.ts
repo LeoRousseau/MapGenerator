@@ -1,6 +1,6 @@
 import { getCurrentConfig } from "../../config";
 import { ElevationLayerData } from "../../config/type";
-import { NumberMap, Point } from "../../types";
+import { NumberMap, Point2 } from "../../types";
 import { getColor } from "../drawer/color";
 import { binarizeMap, cloneMap, getFilteredMap } from "../mapUtils";
 import * as Border from "../border";
@@ -38,7 +38,7 @@ function generateLayer(
   clusters.forEach((cluster) => {
     const points = getPointsFromMap(cluster, data.elevation);
     const color = getColor(islandColor, data.color, getCurrentConfig().islands.colorBlending);
-    drawElevation(cluster, 5);
+   // drawElevation(cluster, 5);
     Path.draw(points, color, "#000000a0", data.stroke);
     onLayerCreated && onLayerCreated(cluster);
     generateLayer(cluster, datas, index + 1, islandColor);
@@ -54,7 +54,7 @@ function getPointsFromMap(source: NumberMap, elevation: number) {
   return runSearch(Border.get(binarizeMap(source, elevation)));
 }
 
-function runSearch(elevationMap: NumberMap): Point[] {
+function runSearch(elevationMap: NumberMap): Point2[] {
   const graph = createGraph(elevationMap);
   let result = getPath(graph, false);
   if (result.length < 10) {
