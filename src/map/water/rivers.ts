@@ -54,7 +54,7 @@ export function drawRivers(map: NumberMap) {
 
 function createRiverPath(points: Point2[]) {
   const points3 = points.map((p, i) => {
-    return { ...p, z: 1 + i / 5 };
+    return { ...p, z: 1 + i / 10 };
   });
   const path = createThickLine(points3);
   Path.draw(path, "#73B2BF", undefined, undefined, false);

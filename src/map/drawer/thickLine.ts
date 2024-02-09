@@ -5,46 +5,49 @@ export function createThickLine(points: Point3[]): Point2[] {
   const rights = [];
   for (let i = 0; i < points.length; i++) {
     const { left, right } = computeSidePoints(points[i], points[i - 1], points[i + 1]);
-    console.log(left, right)
     lefts.push(left);
     rights.push(right);
   }
-  const result = [...lefts, ...rights.reverse(), lefts[0]];
+  const result = [...lefts, ...rights.reverse()];
   return result;
 }
 
-export function computeSidePoints(current: Point3, prev?: Point3, next?:Point3): { left: Point2; right: Point2 } {
-  const r = current.z / 2;
-  if (!prev || !next) {
-    return {
-      left: {
-        x: current.x,
-        y: current.y + r,
-      },
-      right: {
-        x: current.x,
-        y: current.y - r,
-      },
-    };
-  }
-  console.log(current, prev, next)
-  const angle = Math.atan((next.y - prev.y) / (next.x - prev.x));
-  const dx = Math.sin(angle) * r;
-  const dy = Math.cos(angle) * r;
-  console.log(dx,dy)
+function computeSidePoints(current: Point3, prev?: Point3, next?: Point3): { left: Point2; right: Point2 } {
+  const w = current.z / 2;
+  const v1 = prev || current;
+  const v2 = next || current;
+  const dir = substract(v2, v1);
+  const ndir = normalize(dir);
+  const perp = getPerpendicular(ndir);
+  const p1 = add({ ...current }, scale(perp, w));
+  const p2 = substract({ ...current }, scale(perp, w));
   return {
-    left: {
-      x: current.x - dx,
-      y: current.y + dy,
-    },
-    right: {
-      x: current.x + dx,
-      y: current.y - dy,
-    },
+    left: p1,
+    right: p2,
   };
 }
 
-/** https://stackoverflow.com/a/43550268 */
-export function refineFloat(v: number): number {
-  return v + 8 - 8;
+function getPerpendicular(vec: Point2): Point2 {
+  return { x: vec.y, y: -vec.x };
+}
+
+function normalize(vec: Point2): Point2 {
+  const length = getLength(vec);
+  return { x: vec.x / length, y: vec.y / length };
+}
+
+function getLength(vec: Point2): number {
+  return Math.sqrt(Math.pow(vec.x, 2) + Math.pow(vec.y, 2));
+}
+
+function add(v1: Point2, v2: Point2) {
+  return { x: v1.x + v2.x, y: v1.y + v2.y };
+}
+
+function substract(v1: Point2, v2: Point2) {
+  return { x: v1.x - v2.x, y: v1.y - v2.y };
+}
+
+function scale(v1: Point2, s: number) {
+  return { x: v1.x * s, y: v1.y * s };
 }
