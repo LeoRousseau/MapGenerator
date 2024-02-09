@@ -1,0 +1,5 @@
+export const islandNames = ["Aurora", "Sapphire", "Vortex", "Whisper", "Celestial", "Harmony", "Serene", "Tranquil", "Majestic", "Elysium", "Ethereal", "Verdant", "Zephyr", "Spectra", "Nova", "Cerulean", "Lumina", "Opal", "Tempest", "Silvershore", "Emerald", "Radiance", "Cascade", "Azure", "Twilight", "Paradise", "Enigma", "Galaxy", "Oasis", "Abyss", "Velvet", "Inferno", "Cascade", "Pristine", "Tranquility", "Solstice", "Aqua", "Avalon", "Coral", "Luminous", "Pandora", "Siren", "Halcyon", "Whisper", "Reverie", "Sanctuary", "Sovereign", "Zephyr", "Sapphire"];
+export const islandSynonyms = ["Islet", "Atoll", "Cay", "Holm", "Isle", "Skerry", "Archipelago", "Reef", "Island"];
+export const islandSynonymsPlural = ["Islets", "Atolls", "Cays", "Holms", "Isles", "Skerries", "Archipelagoes", "Reefs", "Islands"];
+
+// TODO To improve
