@@ -36,7 +36,7 @@ function createRiver(source: Point2, islandMap: NumberMap): Node[] {
     (f, t) => f.cellValue > t.cellValue,
     (a, b) => a.cellValue - b.cellValue
   );
-  path.pop();
+  //path.pop(); //TODO Define whether it's better or not
   return path;
 }
 
@@ -54,8 +54,10 @@ export function drawRivers(map: NumberMap) {
 
 function createRiverPath(points: Point2[]) {
   const points3 = points.map((p, i) => {
-    return { ...p, z: 1 + i / 10 };
+    const t = 1 + i / 10;
+    const _t = i === points.length - 1 ? 1.5 * t : t;
+    return { ...p, z: _t };
   });
-  const path = createThickLine(points3);
-  Path.draw(path, "#73B2BF", undefined, undefined, false);
+  const path = createThickLine(points3); // TODO May be handle gradient to fade with ocean color (attr gradientTransform)
+  Path.draw(path, "#97CBD6", undefined, undefined, false);
 }
