@@ -44,7 +44,7 @@ export const IslandSettings = () => {
       <div className="colors-container">
         {Array(value)
           .fill(0)
-          .map((v, i) => (
+          .map((_v, i) => (
             <div className="color-container" key={i}>
               <div className="color-title">Island #{i + 1}</div>
               <input className="input-color" defaultValue={defaultColor[i]} type="color"></input>

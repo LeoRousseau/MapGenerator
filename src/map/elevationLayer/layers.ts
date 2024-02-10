@@ -10,7 +10,6 @@ import { createGraph, search } from "../../graph-search/search";
 import { Node } from "../../graph-search/node";
 import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
 import { getPointsFromNodes } from "../pathSmoother";
-import { drawElevation } from "../drawer/map";
 import { Graph } from "../../graph-search/graph";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
@@ -38,7 +37,6 @@ function generateLayer(
   clusters.forEach((cluster) => {
     const points = getPointsFromMap(cluster, data.elevation);
     const color = getColor(islandColor, data.color, getCurrentConfig().islands.colorBlending);
-   // drawElevation(cluster, 5);
     Path.draw(points, color, "#000000a0", data.stroke);
     onLayerCreated && onLayerCreated(cluster);
     generateLayer(cluster, datas, index + 1, islandColor);

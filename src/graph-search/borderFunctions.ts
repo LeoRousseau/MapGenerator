@@ -4,7 +4,7 @@ import { Node } from "./node";
 const minimumPathLength = 10;
 
 const getCanConnectFn =
-  (start: Node, goal: Node) =>
+  (_start: Node, goal: Node) =>
   (from: Node, to: Node): boolean => {
     return (to !== goal || from.reconstructPath().length > minimumPathLength) && to.cellValue > 0;
   };
