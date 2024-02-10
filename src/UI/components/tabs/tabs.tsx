@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tab } from "./Tab";
-import "./tabs.css";
+import style from "./tabs.module.css";
 import { TabContent } from "./tabContent";
 
 type TabsProps = {
@@ -16,7 +16,7 @@ export function Tabs({ tabs }: TabsProps) {
 
   return (
     <div className="tabs-container">
-      <div className="tabs">
+      <div className={style.tabs}>
         {tabs.map((tab, index) => (
           <Tab key={index} label={tab.label} onClick={() => handleTabClick(index)} isActive={index === activeTab} Icon={tab.Icon} />
         ))}
