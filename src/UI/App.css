@@ -26,7 +26,6 @@
   background-color: var(--background);
 }
 
-
-* {
+.ui * {
   font-family: 'Rubik', sans-serif;
 }
