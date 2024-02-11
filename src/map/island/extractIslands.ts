@@ -4,6 +4,6 @@ import { NumberMap } from "../../types";
 import { splitMapByClusters } from "../cluster";
 
 export function splitMapByIslands(elevationMap: NumberMap): NumberMap[] {
-  const canConnect = (f: Node, t: Node) => t.cellValue > 0
+  const canConnect = (_f: Node, t: Node) => t.cellValue > 0
   return splitMapByClusters(elevationMap, getCurrentConfig().islands.maxCount, canConnect);
 }

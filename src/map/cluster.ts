@@ -37,11 +37,11 @@ export function extractMap(graph: Graph, mapToFill: NumberMap, outValue?: number
       const node = graph.grid[x][y];
       if (node.hasBeenVisited) {
         count++;
-        mapToFill[x][y] = inValue ? inValue : node.cellValue;
+        mapToFill[x][y] = inValue ??  node.cellValue;
         node.setValue(0);
         node.setVisited(false);
       } else {
-        mapToFill[x][y] = outValue ? outValue : node.cellValue;
+        mapToFill[x][y] = outValue ??  node.cellValue;
       }
     }
   }
