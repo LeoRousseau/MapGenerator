@@ -19,7 +19,7 @@ export function draw(elevationMap: NumberMap, step: number, color = "#89F590") {
 export function drawElevation(elevationMap: NumberMap, step: number, color: string = "#ff0000") {
   for (let x = 0; x < elevationMap.length; x++) {
     for (let y = 0; y < elevationMap[x].length; y++) {
-      if (elevationMap[x][y] > 0) {
+      if (elevationMap[x][y] > 0.1) {
         const v = elevationMap[x][y];
         const _color = blendColors(color, createFromNumber(Math.floor(v*255)));
         Renderer.getSVG()

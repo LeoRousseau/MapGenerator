@@ -12,6 +12,7 @@ import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
 import { getPointsFromNodes } from "../pathSmoother";
 import { Graph } from "../../graph-search/graph";
 import { computeOCeanMap } from "../water/ocean";
+import { drawElevation } from "../drawer/map";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
 
@@ -22,6 +23,7 @@ export function generateLayers(
   onIslandCreated: onLayerCreatedFn
 ) {
   computeOCeanMap(getFilteredMap(cloneMap(source), datas[0].elevation));
+  //drawElevation(source, 5)
   generateLayer(source, datas, 0, islandColor, onIslandCreated);
 }
 

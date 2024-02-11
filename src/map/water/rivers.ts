@@ -6,6 +6,8 @@ import { getPointsFromNodes } from "../pathSmoother";
 import * as Path from "../drawer/path";
 import { createThickLine } from "../drawer/thickLine";
 import { getOceanMap } from "./ocean";
+import { getSVG } from "../drawer/renderer";
+import { getCurrentConfig } from "../../config";
 
 type Segment = Node[];
 
@@ -24,33 +26,62 @@ export function createRiverSystem(source: NumberMap, start: Point2): RiverData {
     segments: [],
     lakes: [],
   };
-  generateSegment(source, start, result.segments);
+  const graph = createGraph(source, true);
+  generateSegment(graph, start, result.segments);
   return result;
 }
 
-function generateSegment(source: NumberMap, start: Point2, stack: Segment[]) {
-  const graph = createGraph(source, true);
+function generateSegment(graph: Graph, start: Point2, stack: Segment[]): boolean {
   const result = createRiver(start, graph);
-  if (result.length === 0) return [];
+  if (result.length === 0) {
+    console.log("failed");
+    return false;
+  }
   const ocean = getOceanMap();
   const lastNode = result[result.length - 1];
   if (ocean[lastNode.x][lastNode.y] > 0) {
-    console.log("ocean");
     stack.push(result);
+    return true;
   } else {
-    console.log(" not ocean");
+    // if (result.length < 10) {
+    //   return false;
+    // }
     stack.push(result);
+    const nodes = graph.getNeighbours(lastNode).filter((n) => !n.hasBeenVisited);
+    while (nodes.length > 0) {
+      nodes.sort((a: Node, b: Node) => a.cellValue - b.cellValue);
+      const first = nodes.shift();
+      if (!first || first.hasBeenVisited) continue;
+
+      if (generateSegment(graph, first, stack)) {
+        return true;
+      } else {
+        const neighbours = graph.getNeighbours(first).filter((n) => !n.hasBeenVisited);
+        nodes.push(...neighbours);
+      }
+    }
+    return true;
   }
 }
 
 export function drawRivers(map: NumberMap) {
-  const riverDatas = generateRivers(map);
+  const riverDatas = generateRivers(map, 1);
+
   riverDatas.forEach((data) => {
-    data.segments.forEach((seg) => {
+    data.segments.forEach((seg, i) => {
       if (seg.length === 0) return;
-      const points = getPointsFromNodes(seg);
-      createRiverPath(points);
+      seg.forEach((s) => {
+        getSVG()
+          .rect(5, 5)
+          .move(5 * s.x, 5 * s.y)
+          .fill(getCurrentConfig().islands.colors[i]);
+      });
     });
+
+    const a: Segment = [];
+    const conc = a.concat(...data.segments);
+    const points = getPointsFromNodes(conc);
+    createRiverPath(points);
   });
 }
 
@@ -83,23 +114,26 @@ export function filterPeaks(islandMap: NumberMap, threshold = 0.2): Graph {
 
 function createRiver(source: Point2, graph: Graph): Node[] {
   const start = graph.grid[source.x][source.y];
+  const isGoal = (n: Node) => {
+    return !graph.getNeighbours(n).some((e) => e.cellValue < n.cellValue);
+  };
   const path = search(
     start,
-    (n) => n.cellValue === 0,
+    isGoal,
     graph,
-    (f, t) => f.cellValue > t.cellValue,
+    (f, t) => f.cellValue >= t.cellValue,
     (a, b) => a.cellValue - b.cellValue
   );
   //path.pop(); //TODO Define whether it's better or not
   return path;
 }
 
-function createRiverPath(points: Point2[]) {
+function createRiverPath(points: Point2[], color = "#97CBD6") {
   const points3 = points.map((p, i) => {
     const t = 1 + i / 10;
     const _t = i === points.length - 1 ? 1.5 * t : t;
     return { ...p, z: _t };
   });
   const path = createThickLine(points3); // TODO May be handle gradient to fade with ocean color (attr gradientTransform)
-  Path.draw(path, "#97CBD6", undefined, undefined, false);
+  Path.draw(path, color, undefined, undefined, false);
 }
