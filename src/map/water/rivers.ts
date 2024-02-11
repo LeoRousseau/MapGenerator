@@ -5,6 +5,60 @@ import { Graph } from "../../graph-search/graph";
 import { getPointsFromNodes } from "../pathSmoother";
 import * as Path from "../drawer/path";
 import { createThickLine } from "../drawer/thickLine";
+import { getOceanMap } from "./ocean";
+
+type Segment = Node[];
+
+type LakeData = {
+  center: Point2;
+  depth: number;
+};
+
+type RiverData = {
+  segments: Segment[];
+  lakes: LakeData[];
+};
+
+export function createRiverSystem(source: NumberMap, start: Point2): RiverData {
+  const result: RiverData = {
+    segments: [],
+    lakes: [],
+  };
+  generateSegment(source, start, result.segments);
+  return result;
+}
+
+function generateSegment(source: NumberMap, start: Point2, stack: Segment[]) {
+  const result = createRiver(start, source);
+  if (result.length === 0) return [];
+  const ocean = getOceanMap();
+  const lastNode = result[result.length - 1];
+  if (ocean[lastNode.x][lastNode.y] > 0) {
+    console.log("not ocean");
+    stack.push(result);
+  } else {
+    console.log("ocean");
+    stack.push(result);
+  }
+}
+
+export function drawRivers2(map: NumberMap) {
+  const riverDatas = generateRivers2(map);
+  riverDatas.forEach((data) => {
+    data.segments.forEach((seg) => {
+      if (seg.length === 0) return;
+      const points = getPointsFromNodes(seg);
+      createRiverPath(points);
+    });
+  });
+}
+
+function generateRivers2(islandMap: NumberMap, maxNumber = 5): RiverData[] {
+  const sources = getPeaks(islandMap)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, maxNumber);
+  return sources.map((v) => createRiverSystem(islandMap, v));
+}
 
 function getPeaks(islandMap: NumberMap): Node[] {
   const graph = filterPeaks(islandMap);
