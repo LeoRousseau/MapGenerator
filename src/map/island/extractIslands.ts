@@ -1,7 +1,9 @@
 import { getCurrentConfig } from "../../config";
+import { Node } from "../../graph-search/node";
 import { NumberMap } from "../../types";
 import { splitMapByClusters } from "../cluster";
 
 export function splitMapByIslands(elevationMap: NumberMap): NumberMap[] {
-  return splitMapByClusters(elevationMap, getCurrentConfig().islands.maxCount, 0);
+  const canConnect = (f: Node, t: Node) => t.cellValue > 0
+  return splitMapByClusters(elevationMap, getCurrentConfig().islands.maxCount, canConnect);
 }

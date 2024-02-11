@@ -45,7 +45,8 @@ function generateLayer(
 
 function getClustersFromMap(source: NumberMap, elevation: number, limit: number): NumberMap[] {
   const filteredMap = getFilteredMap(cloneMap(source), elevation);
-  return splitMapByClusters(filteredMap, limit, elevation);
+  const canConnect = (_f: Node, t: Node) => t.cellValue > elevation;
+  return splitMapByClusters(filteredMap, limit, canConnect);
 }
 
 function getPointsFromMap(source: NumberMap, elevation: number) {

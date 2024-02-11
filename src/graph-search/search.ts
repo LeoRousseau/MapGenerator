@@ -2,11 +2,11 @@ import { NumberMap } from "../types";
 import { Graph } from "./graph";
 import { Node } from "./node";
 
-export type successFunction = (node: Node) => boolean;
-export type connectFunction = (from: Node, to: Node) => boolean;
-export type sortFunction = (a: Node, b: Node) => number;
+export type SuccessFunction = (node: Node) => boolean;
+export type ConnectFunction = (from: Node, to: Node) => boolean;
+export type SortFunction = (a: Node, b: Node) => number;
 
-export function search(start: Node, isGoal: successFunction, graph: Graph, canConnect: connectFunction, sort?:sortFunction): Node[] {
+export function search(start: Node, isGoal: SuccessFunction, graph: Graph, canConnect: ConnectFunction, sort?:SortFunction): Node[] {
   start.setVisited(true);
 
   const newNodes =  graph.getNeighbours(start);

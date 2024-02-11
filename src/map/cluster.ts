@@ -1,17 +1,21 @@
 import { Graph } from "./../graph-search/graph";
 import { Node } from "./../graph-search/node";
-import { createGraph, search } from "./../graph-search/search";
+import { ConnectFunction, createGraph, search } from "./../graph-search/search";
 import { NumberMap } from "./../types";
 import * as ElevationMap from "./elevationMap";
 
-export function splitMapByClusters(elevationMap: NumberMap, maxCount: number, threshold: number): NumberMap[] {
+export function splitMapByClusters(
+  elevationMap: NumberMap,
+  maxCount: number,
+  canConnect: ConnectFunction
+): NumberMap[] {
   const result: NumberMap[] = [];
   const graph = createGraph(elevationMap, false);
   let i = 0;
   while (i < maxCount) {
     const start = graph.findPoint();
     if (start) {
-      const map = extractCluster(graph, start, threshold);
+      const map = extractCluster(graph, start, canConnect);
       if (map) {
         i++;
         result.push(map);
@@ -43,13 +47,8 @@ function extractMap(graph: Graph, mapToFill: NumberMap): number {
   return count;
 }
 
-function extractCluster(graph: Graph, start: Node, threshold: number): NumberMap | undefined {
-  search(
-    start,
-    () => false,
-    graph,
-    (_from, to) => to.cellValue > threshold
-  );
+function extractCluster(graph: Graph, start: Node, canConnect: ConnectFunction): NumberMap | undefined {
+  search(start, () => false, graph, canConnect);
   const map = ElevationMap.createEmpty(graph.grid.length);
   const size = extractMap(graph, map);
   return size > 8 ? map : undefined;
