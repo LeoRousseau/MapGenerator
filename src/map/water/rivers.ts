@@ -29,21 +29,22 @@ export function createRiverSystem(source: NumberMap, start: Point2): RiverData {
 }
 
 function generateSegment(source: NumberMap, start: Point2, stack: Segment[]) {
-  const result = createRiver(start, source);
+  const graph = createGraph(source, true);
+  const result = createRiver(start, graph);
   if (result.length === 0) return [];
   const ocean = getOceanMap();
   const lastNode = result[result.length - 1];
   if (ocean[lastNode.x][lastNode.y] > 0) {
-    console.log("not ocean");
+    console.log("ocean");
     stack.push(result);
   } else {
-    console.log("ocean");
+    console.log(" not ocean");
     stack.push(result);
   }
 }
 
-export function drawRivers2(map: NumberMap) {
-  const riverDatas = generateRivers2(map);
+export function drawRivers(map: NumberMap) {
+  const riverDatas = generateRivers(map);
   riverDatas.forEach((data) => {
     data.segments.forEach((seg) => {
       if (seg.length === 0) return;
@@ -53,7 +54,7 @@ export function drawRivers2(map: NumberMap) {
   });
 }
 
-function generateRivers2(islandMap: NumberMap, maxNumber = 5): RiverData[] {
+function generateRivers(islandMap: NumberMap, maxNumber = 5): RiverData[] {
   const sources = getPeaks(islandMap)
     .sort(() => Math.random() - 0.5)
     .slice(0, maxNumber);
@@ -80,8 +81,7 @@ export function filterPeaks(islandMap: NumberMap, threshold = 0.2): Graph {
   return result;
 }
 
-function createRiver(source: Point2, islandMap: NumberMap): Node[] {
-  const graph = createGraph(islandMap, true);
+function createRiver(source: Point2, graph: Graph): Node[] {
   const start = graph.grid[source.x][source.y];
   const path = search(
     start,
@@ -92,18 +92,6 @@ function createRiver(source: Point2, islandMap: NumberMap): Node[] {
   );
   //path.pop(); //TODO Define whether it's better or not
   return path;
-}
-
-function generateRivers(islandMap: NumberMap, maxNumber = 5): Node[][] {
-  const sources = getPeaks(islandMap)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, maxNumber);
-  return sources.map((v) => createRiver(v, islandMap));
-}
-
-export function drawRivers(map: NumberMap) {
-  const rivers = generateRivers(map).map((ar) => getPointsFromNodes(ar));
-  rivers.filter((r) => r.length > 0).forEach((r) => createRiverPath(r));
 }
 
 function createRiverPath(points: Point2[]) {

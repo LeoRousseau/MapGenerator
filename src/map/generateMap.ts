@@ -1,7 +1,7 @@
 import * as ElevationMap from "./elevationMap";
 import * as Renderer from "./drawer/renderer";
 import * as Background from "./drawer/background";
-import { drawRivers, drawRivers2 } from "./water/rivers";
+import { drawRivers } from "./water/rivers";
 import { getCurrentConfig } from "../config";
 import { generateLayers } from "./elevationLayer/layers";
 import { NumberMap } from "../types";
@@ -30,7 +30,7 @@ export function generateMap() {
     islands.push(source);
   });
   islands.forEach((source) => {
-    drawRivers2(source);
+    drawRivers(source);
   });
 
   drawSimpleText({ x: 50, y: 100 }, getIslandName(islands.length > 0), "#00000090");
