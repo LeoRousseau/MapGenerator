@@ -31,6 +31,20 @@ export function drawElevation(elevationMap: NumberMap, step: number, color: stri
   }
 }
 
+
+export function drawValue(elevationMap: NumberMap, step: number, value: number, color: string = "#ff0000") {
+  for (let x = 0; x < elevationMap.length; x++) {
+    for (let y = 0; y < elevationMap[x].length; y++) {
+      if (elevationMap[x][y] === value) {
+        Renderer.getSVG()
+          .rect(step, step)
+          .move(step * x, step * y)
+          .fill(color);
+      }
+    }
+  }
+}
+
 export function drawGraph(graph: Graph, step: number, color = "#89F590") {
   for (let x = 0; x < graph.grid.length; x++) {
     for (let y = 0; y < graph.grid[x].length; y++) {

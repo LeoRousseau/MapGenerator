@@ -11,6 +11,7 @@ import { Node } from "../../graph-search/node";
 import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
 import { getPointsFromNodes } from "../pathSmoother";
 import { Graph } from "../../graph-search/graph";
+import { computeOCeanMap } from "../water/ocean";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
 
@@ -20,6 +21,7 @@ export function generateLayers(
   islandColor: string,
   onIslandCreated: onLayerCreatedFn
 ) {
+  computeOCeanMap(getFilteredMap(cloneMap(source), datas[0].elevation));
   generateLayer(source, datas, 0, islandColor, onIslandCreated);
 }
 
@@ -74,7 +76,7 @@ function runSearch(elevationMap: NumberMap): Point2[] {
 
 function getPath(graph: Graph, reverse: boolean): Node[] {
   const condition = (n: Node) => {
-    return graph.getNeighbours(n).length > 1;
+    return n.cellValue > 0 && graph.getNeighbours(n).length > 1;
   };
 
   const start = graph.findPoint(condition, reverse);

@@ -45,7 +45,7 @@ export class Graph {
     if (reverse) {
       for (let x = this.grid.length - 1; x > 0; x--) {
         for (let y = this.grid.length - 1; y > 0; y--) {
-          if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
+          if (condition(this.grid[x][y])) {
             return this.grid[x][y];
           }
         }
@@ -53,7 +53,7 @@ export class Graph {
     } else {
       for (let x = 0; x < this.grid.length; x++) {
         for (let y = 0; y < this.grid[x].length; y++) {
-          if (this.grid[x][y].cellValue > 0 && condition(this.grid[x][y])) {
+          if (condition(this.grid[x][y])) {
             return this.grid[x][y];
           }
         }
