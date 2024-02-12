@@ -25,7 +25,7 @@ export function drawElevation(elevationMap: NumberMap, step: number, color: stri
         Renderer.getSVG()
           .rect(step, step)
           .move(step * x, step * y)
-          .fill(_color);
+          .fill(_color).click(() => console.log(v));
       }
     }
   }

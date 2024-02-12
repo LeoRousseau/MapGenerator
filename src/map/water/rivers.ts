@@ -4,15 +4,18 @@ import { Node } from "../../graph-search/node";
 import { Graph } from "../../graph-search/graph";
 import { getPointsFromNodes } from "../pathSmoother";
 import * as Path from "../drawer/path";
-import { createThickLine } from "../drawer/thickLine";
+import { createThickLine, getLength, substract } from "../drawer/thickLine";
 import { getOceanMap } from "./ocean";
 import { getSVG } from "../drawer/renderer";
-import { getCurrentConfig } from "../../config";
+import { extractCluster } from "../cluster";
+import { getPointsFromMap } from "../elevationLayer/layers";
+import { createEmpty } from "../elevationMap";
+import { drawElevation, drawValue } from "../drawer/map";
 
 type Segment = Node[];
 
 type LakeData = {
-  center: Point2;
+  position: Point2;
   depth: number;
 };
 
@@ -43,20 +46,24 @@ function generateSegment(graph: Graph, start: Point2, stack: Segment[]): boolean
     stack.push(result);
     return true;
   } else {
-    // if (result.length < 10) {
-    //   return false;
-    // }
+    if (result.length < 2) {
+      return false;
+    }
     stack.push(result);
-    const nodes = graph.getNeighbours(lastNode).filter((n) => !n.hasBeenVisited);
+    const nodes = graph.getNeighbours(lastNode);
+    const visitedNodes: Node[] = [];
     while (nodes.length > 0) {
+      // ! Need to understand why it's broken sometimes
       nodes.sort((a: Node, b: Node) => a.cellValue - b.cellValue);
       const first = nodes.shift();
-      if (!first || first.hasBeenVisited) continue;
 
-      if (generateSegment(graph, first, stack)) {
+      if (!first || visitedNodes.includes(first)) continue;
+      visitedNodes.push(first);
+      const valid = generateSegment(graph, first, stack);
+      if (valid) {
         return true;
       } else {
-        const neighbours = graph.getNeighbours(first).filter((n) => !n.hasBeenVisited);
+        const neighbours = graph.getNeighbours(first);
         nodes.push(...neighbours);
       }
     }
@@ -65,23 +72,52 @@ function generateSegment(graph: Graph, start: Point2, stack: Segment[]): boolean
 }
 
 export function drawRivers(map: NumberMap) {
-  const riverDatas = generateRivers(map, 1);
+  const riverDatas = generateRivers(map, 5);
+  computeLakes(riverDatas);
 
+  console.log(riverDatas);
   riverDatas.forEach((data) => {
-    data.segments.forEach((seg, i) => {
+    data.segments.forEach((seg) => {
       if (seg.length === 0) return;
-      seg.forEach((s) => {
-        getSVG()
-          .rect(5, 5)
-          .move(5 * s.x, 5 * s.y)
-          .fill(getCurrentConfig().islands.colors[i]);
-      });
+      //   const color =
+      //     "rgb(" +
+      //     Math.round(Math.random() * 255) +
+      //     "," +
+      //     Math.round(Math.random() * 255) +
+      //     "," +
+      //     Math.round(Math.random() * 255) +
+      //     ")";
+      //   seg.forEach((s) => {
+      //     getSVG()
+      //       .rect(5, 5)
+      //       .move(5 * s.x, 5 * s.y)
+      //       .fill(color);
+      //   });
     });
 
     const a: Segment = [];
     const conc = a.concat(...data.segments);
     const points = getPointsFromNodes(conc);
+    data.lakes.forEach((lake) => createLakeShape(map, lake));
     createRiverPath(points);
+  });
+}
+
+function computeLakes(datas: RiverData[]) {
+  datas.forEach((data) => {
+    data.segments.forEach((seg, i) => {
+      if (i < data.segments.length - 1) {
+        const current = seg[seg.length - 1];
+        const next = data.segments[i + 1][0];
+        const distance = getLength(substract(current, next));
+        if (distance > 2) {
+          data.lakes.push({
+            position: current,
+            depth: next.cellValue - current.cellValue,
+          });
+        }
+      }
+    });
   });
 }
 
@@ -136,4 +172,33 @@ function createRiverPath(points: Point2[], color = "#97CBD6") {
   });
   const path = createThickLine(points3); // TODO May be handle gradient to fade with ocean color (attr gradientTransform)
   Path.draw(path, color, undefined, undefined, false);
+}
+
+function createLakeShape(source: NumberMap, data: LakeData) {
+  const graph = createGraph(source);
+  const start = graph.grid[data.position.x][data.position.y];
+  const canConnect = (_f: Node, t: Node) => {
+    const depthIsValid = t.cellValue - start.cellValue < data.depth;
+    const isOcean = getOceanMap()[t.x][t.y] > 0;
+    return depthIsValid && !isOcean;
+  };
+
+  search(start, () => false, graph, canConnect);
+  const map = createEmpty(graph.grid.length);
+  for (let x = 0; x < graph.grid.length; x++) {
+    for (let y = 0; y < graph.grid[x].length; y++) {
+      const node = graph.grid[x][y];
+      if (node.hasBeenVisited) {
+        map[x][y] = 1;
+      }
+    }
+  }
+
+  //drawValue(map, 5, 1, "#ff0000a0");
+  const points = getPointsFromMap(map, 0);
+  Path.draw(points, "#97CBD6");
+  // getSVG()
+  //   .rect(5, 5)
+  //   .move(5 * start.x, 5 * start.y)
+  //   .fill("#00000");
 }
