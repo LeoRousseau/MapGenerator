@@ -23,7 +23,7 @@ export function generateLayers(
   onIslandCreated: onLayerCreatedFn
 ) {
   computeOCeanMap(getFilteredMap(cloneMap(source), datas[0].elevation));
-  //drawElevation(source, 5)
+  //drawElevation(source, 5, "#00ff00")
   generateLayer(source, datas, 0, islandColor, onIslandCreated);
 }
 

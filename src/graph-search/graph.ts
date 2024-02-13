@@ -70,4 +70,12 @@ export class Graph {
       }
     }
   }
+
+  resetPrevious() {
+    for (let x = 0; x < this.grid.length; x++) {
+      for (let y = 0; y < this.grid[x].length; y++) {
+        this.grid[x][y].resetPrevious();
+      }
+    }
+  }
 }

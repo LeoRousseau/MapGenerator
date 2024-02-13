@@ -13,17 +13,16 @@ export function create(width: number, height: number): NumberMap {
   return elevationMap;
 }
 
-export function createEmpty(size: number): NumberMap {
+export function createEmpty(size: number, value = 0): NumberMap {
   const result: NumberMap = [];
   for (let x = 0; x < size; x++) {
     result[x] = [];
     for (let y = 0; y < size; y++) {
-      result[x][y] = 0;
+      result[x][y] = value;
     }
   }
   return result;
 }
-
 
 function getNoiseValue(x: number, y: number, origin: [number, number], noise: NoiseFunction2D, size: number) {
   const NoiseScale = 1;

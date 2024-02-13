@@ -52,6 +52,10 @@ export class Node {
     console.log("Node ", this.x, this.y);
   }
 
+  resetPrevious() {
+    this._previous = null;
+  }
+
   reset() {
     this._hasBeenVisited = false;
     this._previous = null;
