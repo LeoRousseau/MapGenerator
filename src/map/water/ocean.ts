@@ -16,6 +16,7 @@ export function computeOCeanMap(source: NumberMap) {
   oceanMap = map;
 }
 
-export function getOceanMap(): NumberMap | undefined {
+export function getOceanMap(): NumberMap {
+  if (!oceanMap) throw new Error('Ocean map not generated');
   return oceanMap;
 }

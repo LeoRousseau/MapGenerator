@@ -12,6 +12,7 @@ import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
 import { getPointsFromNodes } from "../pathSmoother";
 import { Graph } from "../../graph-search/graph";
 import { computeOCeanMap } from "../water/ocean";
+import { drawElevation } from "../drawer/map";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
 
@@ -22,6 +23,7 @@ export function generateLayers(
   onIslandCreated: onLayerCreatedFn
 ) {
   computeOCeanMap(getFilteredMap(cloneMap(source), datas[0].elevation));
+  //drawElevation(source, 5, "#00ff00")
   generateLayer(source, datas, 0, islandColor, onIslandCreated);
 }
 
@@ -51,14 +53,14 @@ function getClustersFromMap(source: NumberMap, elevation: number, limit: number)
   return splitMapByClusters(filteredMap, limit, canConnect);
 }
 
-function getPointsFromMap(source: NumberMap, elevation: number) {
+export function getPointsFromMap(source: NumberMap, elevation: number) {
   return runSearch(Border.get(binarizeMap(source, elevation)));
 }
 
 function runSearch(elevationMap: NumberMap): Point2[] {
   const graph = createGraph(elevationMap);
   let result = getPath(graph, false);
-  if (result.length < 10) {
+  if (result.length < 5) {
     // TODO : condition to define
     graph.reset();
     result = getPath(graph, true);

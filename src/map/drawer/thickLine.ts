@@ -36,7 +36,7 @@ function normalize(vec: Point2): Point2 {
   return { x: vec.x / length, y: vec.y / length };
 }
 
-function getLength(vec: Point2): number {
+export function getLength(vec: Point2): number {
   return Math.sqrt(Math.pow(vec.x, 2) + Math.pow(vec.y, 2));
 }
 
@@ -44,7 +44,7 @@ function add(v1: Point2, v2: Point2) {
   return { x: v1.x + v2.x, y: v1.y + v2.y };
 }
 
-function substract(v1: Point2, v2: Point2) {
+export function substract(v1: Point2, v2: Point2) {
   return { x: v1.x - v2.x, y: v1.y - v2.y };
 }
 
