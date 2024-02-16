@@ -1,4 +1,4 @@
-import { binarizeMap } from "../../map/mapUtils";
+import { binarizeMap, getFilteredMap, cloneMap } from "../../map/mapUtils";
 
 const source = [
   [6.2492, -7.2293, -2.2013, -4.4305, 3.9247, -1.3259, 0.8625, 7.7328],
@@ -19,9 +19,28 @@ const binarized = [
   [0, 1, 1, 0, 0, 1, 1, 0],
   [0, 1, 0, 0, 0, 0, 0, 0],
   [1, 1, 0, 1, 0, 0, 1, 0],
-  [0, 0, 0, 0, 1, 0, 0, 1]
+  [0, 0, 0, 0, 1, 0, 0, 1],
 ];
-  
+
+const filtered = [
+  [6.2492, 0, 0, 0, 3.9247, 0, 0.8625, 7.7328],
+  [1.8862, 0, 3.3614, 7.5791, 4.7417, 0, 9.8487, 8.1895],
+  [4.8027, 7.7014, 0, 0, 0, 4.9865, 4.8901, 0],
+  [0, 0, 0, 0, 4.6704, 0, 0, 2.9914],
+  [0, 7.7559, 1.6237, 0, 0, 3.0006, 1.6621, 0],
+  [0, 1.3724, 0, 0, 0, 0, 0, 0],
+  [2.7519, 9.0128, 0, 8.6944, 0, 0, 4.1803, 0],
+  [0, 0, 0, 0, 8.0253, 0, 0, 1.1047],
+];
+
 test("binarize map", () => {
   expect(binarizeMap(source, 0)).toStrictEqual(binarized);
+});
+
+test("filter map", () => {
+  expect(getFilteredMap(source, 0)).toStrictEqual(filtered);
+});
+
+test("clone map", () => {
+  expect(cloneMap(source)).toStrictEqual(source);
 });
