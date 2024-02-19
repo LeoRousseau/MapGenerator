@@ -1,6 +1,6 @@
 import { Node } from "../../graph-search/node";
 
-describe("Testing node class", () => {
+describe("Testing Node class", () => {
   const node0 = new Node(1, 0, 0);
   const node1 = new Node(2, 0, 1);
   const node2 = new Node(3, 1, 0);
