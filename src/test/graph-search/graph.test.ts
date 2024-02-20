@@ -1,4 +1,4 @@
-import { createGraph } from "../../graph-search/search";
+import { createGraph } from "../../graph-search/index";
 
 describe("Testing Graph class", () => {
   const source = [

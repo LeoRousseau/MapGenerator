@@ -1,4 +1,4 @@
-import { Node } from "../../graph-search/node";
+import { Node } from "../../graph-search/index";
 
 describe("Testing Node class", () => {
   const node0 = new Node(1, 0, 0);

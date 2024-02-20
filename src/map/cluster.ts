@@ -1,6 +1,4 @@
-import { Graph } from "./../graph-search/graph";
-import { Node } from "./../graph-search/node";
-import { ConnectFunction, createGraph, search } from "./../graph-search/search";
+import { Graph, Node, search, ConnectFunction, createGraph } from "./../graph-search/index";
 import { NumberMap } from "./../types";
 import * as ElevationMap from "./elevationMap";
 
@@ -37,11 +35,11 @@ export function extractMap(graph: Graph, mapToFill: NumberMap, outValue?: number
       const node = graph.grid[x][y];
       if (node.hasBeenVisited) {
         count++;
-        mapToFill[x][y] = inValue ??  node.cellValue;
+        mapToFill[x][y] = inValue ?? node.cellValue;
         node.setValue(0);
         node.setVisited(false);
       } else {
-        mapToFill[x][y] = outValue ??  node.cellValue;
+        mapToFill[x][y] = outValue ?? node.cellValue;
       }
     }
   }
@@ -54,4 +52,3 @@ function extractCluster(graph: Graph, start: Node, canConnect: ConnectFunction):
   const size = extractMap(graph, map, 0);
   return size > 8 ? map : undefined;
 }
-

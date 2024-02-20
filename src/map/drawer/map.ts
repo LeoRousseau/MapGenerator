@@ -1,4 +1,4 @@
-import { Graph } from "../../graph-search/graph";
+import { Graph } from "../../graph-search/index";
 import { NumberMap } from "../../types";
 import * as Renderer from "./renderer";
 import { blendColors, createFromNumber } from "./color";

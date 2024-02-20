@@ -6,13 +6,9 @@ import { binarizeMap, cloneMap, getFilteredMap } from "../mapUtils";
 import * as Border from "../border";
 import * as Path from "../drawer/path";
 import { splitMapByClusters } from "../cluster";
-import { createGraph, search } from "../../graph-search/search";
-import { Node } from "../../graph-search/node";
-import { getCanConnect, getGoal } from "../../graph-search/borderFunctions";
+import { createGraph, search, Graph, Node, getCanConnect, getGoal } from "../../graph-search/index";
 import { getPointsFromNodes } from "../pathSmoother";
-import { Graph } from "../../graph-search/graph";
 import { computeOCeanMap } from "../water/ocean";
-import { drawElevation } from "../drawer/map";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
 

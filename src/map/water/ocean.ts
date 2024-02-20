@@ -1,6 +1,5 @@
-import { createGraph, search } from "../../graph-search/search";
+import { createGraph, search, Node } from "../../graph-search/index";
 import { NumberMap } from "../../types";
-import { Node } from "../../graph-search/node";
 import { createEmpty } from "../elevationMap";
 import { extractMap } from "../cluster";
 
@@ -17,6 +16,6 @@ export function computeOCeanMap(source: NumberMap) {
 }
 
 export function getOceanMap(): NumberMap {
-  if (!oceanMap) throw new Error('Ocean map not generated');
+  if (!oceanMap) throw new Error("Ocean map not generated");
   return oceanMap;
 }

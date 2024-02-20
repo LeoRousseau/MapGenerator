@@ -1,7 +1,6 @@
 import { getScreenPos, randomizePos } from "./generateMap";
-import { Node } from '../graph-search/node'
+import { Node } from "../graph-search/index";
 import { Point2 } from "../types";
-
 
 const getLineData = (from: Point2, to: Point2): { length: number; angle: number } => {
   const x_diff = to.x - from.x;
