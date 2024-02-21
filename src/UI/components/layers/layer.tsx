@@ -1,10 +1,12 @@
+import { ElevationLayerData } from "../../../config/type";
 import "./layer.css";
 
 export type LayerProps = {
   elevation: number;
   color: string;
-  strokeThickness: number;
+  stroke: number;
   onDelete: (index: number) => void;
+  onChange: (index: number, data: Partial<ElevationLayerData>) => void;
   index: number;
 };
 
@@ -18,15 +20,26 @@ export function Layer(layerData: { data: LayerProps }) {
           defaultValue={layerData.data.elevation}
           type="number"
           disabled={layerData.data.index === 0}
+          onBlur={(e) => layerData.data.onChange(layerData.data.index, { elevation: e.target.valueAsNumber })}
         ></input>
       </div>
       <div className="layer-item">
         <div className="layer-item-title">Color</div>
-        <input className="layer-item-input-color" defaultValue={layerData.data.color} type="color"></input>
+        <input
+          className="layer-item-input-color"
+          defaultValue={layerData.data.color}
+          onBlur={(e) => layerData.data.onChange(layerData.data.index, { color: e.target.value })}
+          type="color"
+        ></input>
       </div>
       <div className="layer-item">
         <div className="layer-item-title">Stroke</div>
-        <input className="layer-item-input-number" defaultValue={layerData.data.strokeThickness} type="number"></input>
+        <input
+          className="layer-item-input-number"
+          defaultValue={layerData.data.stroke}
+          onBlur={(e) => layerData.data.onChange(layerData.data.index, { stroke: e.target.valueAsNumber })}
+          type="number"
+        ></input>
       </div>
       <div
         className={"layer-item-delete" + (layerData.data.index ? "" : " disabled")}

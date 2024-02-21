@@ -1,43 +1,38 @@
-import { useState } from "react";
 import { Layer } from "./layer";
 import "./layerContainer.css";
-
-const defautLayers = [
-  {
-    elevation: 0,
-    color: "#CDCF6A",
-    strokeThickness: 1,
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { ConfigType, ElevationLayerData } from "../../../config/type";
+import { ConfigStore } from "../../../config/store";
+import { addLayer, removeLayer, updateLayer } from "../../../config/configSlice";
 
 export const LayerContainer = () => {
-  const [layers, setLayers] = useState(defautLayers);
+  const layers = useSelector<ConfigStore, ConfigType["elevationLayer"]>((state) => state.config.elevationLayer);
+  const dispatch = useDispatch();
 
   const deleteLayer = (index: number) => {
-    const newState = [...layers];
-    newState.splice(index, 1);
-    setLayers(newState);
+    dispatch(removeLayer(index));
   };
 
-  const addLayer = () => {
+  const _addLayer = () => {
     if (layers.length >= 6) return;
-    const newState = [...layers];
-    newState.push({
-      elevation: 0,
-      color: "#CDCF6A",
-      strokeThickness: 0,
-    });
-    setLayers(newState);
+    dispatch(addLayer());
+  };
+
+  const _updateLayer = (index: number, data: Partial<ElevationLayerData>) => {
+    dispatch(updateLayer({ index, data }));
   };
 
   return (
     <div className="layer-container">
       <div className="layer-array">
         {layers.map((l, i) => (
-          <Layer data={{ ...l, onDelete: deleteLayer, index: i }} key={i}></Layer>
+          <Layer
+            data={{ ...l, onDelete: deleteLayer, index: i, onChange: _updateLayer }}
+            key={l.elevation + "," + i}
+          ></Layer>
         ))}
       </div>
-      <div className={layers.length < 6 ? "layer-add-button" : "layer-add-button disabled"} onClick={addLayer}>
+      <div className={layers.length < 6 ? "layer-add-button" : "layer-add-button disabled"} onClick={_addLayer}>
         Add Layer
       </div>
     </div>

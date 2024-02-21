@@ -1,5 +1,7 @@
+import store from "../config/store";
 import "./App.css";
 import { RightPane } from "./components/rightPane";
+import { Provider } from "react-redux";
 
 function App() {
   return (
@@ -7,7 +9,9 @@ function App() {
       <div className="global-container">
         <div id="canvas"></div>
         <div className="ui">
-          <RightPane></RightPane>
+          <Provider store={store}>
+            <RightPane></RightPane>
+          </Provider>
         </div>
       </div>
     </>
