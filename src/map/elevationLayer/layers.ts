@@ -1,7 +1,6 @@
 import { getCurrentConfig } from "../../config";
 import { ElevationLayerData } from "../../config/type";
 import { NumberMap, Point2 } from "../../types";
-import { getColor } from "../drawer/color";
 import { binarizeMap, cloneMap, getFilteredMap } from "../mapUtils";
 import * as Border from "../border";
 import * as Path from "../drawer/path";
@@ -9,37 +8,37 @@ import { splitMapByClusters } from "../cluster";
 import { createGraph, search, Graph, Node, getCanConnect, getGoal } from "../../graph-search/index";
 import { getPointsFromNodes } from "../pathSmoother";
 import { computeOCeanMap } from "../water/ocean";
+import { MapID } from "../drawer/id";
 
 type onLayerCreatedFn = (source: NumberMap) => void;
 
 export function generateLayers(
   source: NumberMap,
   datas: ElevationLayerData[],
-  islandColor: string,
   onIslandCreated: onLayerCreatedFn
 ) {
   computeOCeanMap(getFilteredMap(cloneMap(source), datas[0].elevation));
   //drawElevation(source, 5, "#00ff00")
-  generateLayer(source, datas, 0, islandColor, onIslandCreated);
+  generateLayer(source, datas, 0, MapID['island'], onIslandCreated);
 }
 
 function generateLayer(
   source: NumberMap,
   datas: ElevationLayerData[],
-  index: number,
-  islandColor: string,
+  level: number,
+  idSuffix: string,
   onLayerCreated?: onLayerCreatedFn
 ) {
-  if (index >= datas.length) return;
+  if (level >= datas.length) return;
 
-  const data = datas[index];
-  const clusters = getClustersFromMap(source, data.elevation, index === 0 ? getCurrentConfig().islands.maxCount : 5);
-  clusters.forEach((cluster) => {
+  const data = datas[level];
+  const clusters = getClustersFromMap(source, data.elevation, level === 0 ? getCurrentConfig().islands.maxCount : 5);
+  clusters.forEach((cluster, i) => {
     const points = getPointsFromMap(cluster, data.elevation);
-    const color = getColor(islandColor, data.color, getCurrentConfig().islands.colorBlending);
-    Path.draw(points, color, "#000000a0", data.stroke);
+    const id = getID(idSuffix, i);
+    Path.draw(points, true, getID(idSuffix, i));
     onLayerCreated && onLayerCreated(cluster);
-    generateLayer(cluster, datas, index + 1, islandColor);
+    generateLayer(cluster, datas, level + 1, id);
   });
 }
 
@@ -85,4 +84,8 @@ function getPath(graph: Graph, reverse: boolean): Node[] {
 
   const result = search(start, getGoal(end), graph, getCanConnect(start, end));
   return result;
+}
+
+function getID(suffix: string, index: number): string {
+  return suffix + "_" + index;
 }

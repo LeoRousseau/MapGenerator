@@ -7,6 +7,7 @@ import { getOceanMap } from "./ocean";
 import { getPointsFromMap } from "../elevationLayer/layers";
 import { createEmpty } from "../elevationMap";
 import { getPeaks } from "../mount/peaks";
+import { MapID } from "../drawer/id";
 
 type Segment = Node[];
 
@@ -76,12 +77,12 @@ export function drawRivers(map: NumberMap) {
   const riverDatas = generateRivers(map, 5);
   computeLakes(riverDatas);
 
-  riverDatas.forEach((data) => {
+  riverDatas.forEach((data, i) => {
     const a: Segment = [];
     const conc = a.concat(...data.segments);
     const points = getPointsFromNodes(conc);
-    data.lakes.forEach((lake) => createLakeShape(map, lake));
-    createRiverPath(points);
+    data.lakes.forEach((lake, j) => createLakeShape(map, lake,  MapID['lake'] + "_" + i + "_" + j));
+    createRiverPath(points, MapID['river'] + "_" + i);
   });
 }
 
@@ -126,17 +127,17 @@ function createRiver(source: Point2, graph: Graph): Node[] {
   return path;
 }
 
-function createRiverPath(points: Point2[], color = "#97CBD6") {
+function createRiverPath(points: Point2[], id: string) {
   const points3 = points.map((p, i) => {
     const t = 1 + i / 10;
     const _t = i === points.length - 1 ? 1.5 * t : t;
     return { ...p, z: _t };
   });
   const path = createThickLine(points3); // TODO May be handle gradient to fade with ocean color (attr gradientTransform)
-  Path.draw(path, color, undefined, undefined, false);
+  Path.draw(path, false, id);
 }
 
-function createLakeShape(source: NumberMap, data: LakeData) {
+function createLakeShape(source: NumberMap, data: LakeData, id:string) {
   const graph = createGraph(source);
   const start = graph.grid[data.position.x][data.position.y];
   const canConnect = (_f: Node, t: Node) => {
@@ -157,5 +158,5 @@ function createLakeShape(source: NumberMap, data: LakeData) {
   }
 
   const points = getPointsFromMap(map, 0);
-  Path.draw(points, "#97CBD6");
+  Path.draw(points, true, id);
 }

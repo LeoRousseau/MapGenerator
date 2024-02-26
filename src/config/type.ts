@@ -1,6 +1,7 @@
 export type ConfigType = {
   islands: IslandData;
   elevationLayer: ElevationLayerData[];
+  water: { color: string };
 };
 
 export type ColorBlendingMode = "Islands" | "Blend" | "Layers";

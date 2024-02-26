@@ -8,6 +8,7 @@ import { NumberMap } from "../types";
 import { drawSimpleText } from "./drawer/text";
 import { getIslandName } from "./name-generator/generate";
 import { generateMounts } from "./mount/mount";
+import { applyStyleToMap } from "./drawer/style";
 
 /**
  * DEBUG LINES
@@ -27,7 +28,7 @@ export function generateMap() {
   Background.draw(dim.width, dim.height);
   const elevationMap = ElevationMap.create(dim.width / step, dim.height / step);
   const islands: NumberMap[] = [];
-  generateLayers(elevationMap, getCurrentConfig().elevationLayer, getCurrentConfig().islands.colors[0], (source) => {
+  generateLayers(elevationMap, getCurrentConfig().elevationLayer, (source) => {
     islands.push(source);
   });
   islands.forEach((source) => {
@@ -36,4 +37,6 @@ export function generateMap() {
   });
 
   drawSimpleText({ x: 50, y: 100 }, getIslandName(islands.length > 0), "#00000090");
+
+  applyStyleToMap();
 }

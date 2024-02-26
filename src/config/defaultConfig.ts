@@ -34,4 +34,7 @@ export const defaultConfig: ConfigType = {
       stroke: 1,
     },
   ],
+  water: {
+    color: "#97CBD6",
+  }
 };
