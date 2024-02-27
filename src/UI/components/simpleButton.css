@@ -1,11 +1,12 @@
 .button-container {
   flex: 1;
-  padding: 6px;
+  padding: 10px;
   font-size: 14px;
   cursor: pointer;
   color: var(--black);
   font-weight: bold;
   user-select: none;
+  background-color: white;
 }
 
 .button-container:hover {

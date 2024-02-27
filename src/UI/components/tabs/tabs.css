@@ -1,4 +1,5 @@
 .tabs {
     display: flex;
     background-color: whitesmoke;
+    gap: 2px;
 }

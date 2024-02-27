@@ -33,10 +33,11 @@ const configSlice = createSlice({
       const newData = action.payload.data;
       state.elevationLayer[action.payload.index] = { ...currentData, ...newData };
     },
+    reset: () => defaultConfig, // to fix
   },
 });
 
-export const { setBlendMode, setMaxIslandCount, setIslandColor, addLayer, removeLayer, updateLayer } =
+export const { setBlendMode, setMaxIslandCount, setIslandColor, addLayer, removeLayer, updateLayer, reset } =
   configSlice.actions;
 const { reducer } = configSlice;
 export default reducer;
