@@ -1,7 +1,7 @@
 import { NumberMap } from "../types";
 
 export function get(entryMap: NumberMap): NumberMap {
-  let result: NumberMap = [];
+  const result: NumberMap = [];
   for (let x = 0; x < entryMap.length; x++) {
     result[x] = [];
     for (let y = 0; y < entryMap[x].length; y++) {

@@ -3,7 +3,7 @@ import { ConfigType } from "./type";
 export const defaultConfig: ConfigType = {
   islands: {
     colorBlending: "Islands",
-    maxCount: 5,
+    maxCount: 1,
     colors: [
       "#CDCF6A",
       "#9AB875",

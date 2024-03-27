@@ -5,10 +5,12 @@ import { drawRivers } from "./water/rivers";
 import { getCurrentConfig } from "../config";
 import { generateLayers } from "./elevationLayer/layers";
 import { NumberMap } from "../types";
-import { drawSimpleText } from "./drawer/text";
+import { drawSimpleTitle } from "./drawer/text";
 import { getIslandName } from "./name-generator/generate";
 import { generateMounts } from "./mount/mount";
 import { applyStyleToMap } from "./drawer/style";
+import { computeWaterIndent, createBays } from "./water/bay";
+import { draw, drawElevation } from "./drawer/map";
 
 /**
  * DEBUG LINES
@@ -32,11 +34,15 @@ export function generateMap() {
     islands.push(source);
   });
   islands.forEach((source) => {
-    drawRivers(source);
-    generateMounts(source);
+    //const result = computeWaterIndent(source);
+    //drawElevation(source, 5, "#ff0000a0", testPX)
+    createBays(source);
+    //draw(result, 5)
+    //drawRivers(source);
+    //generateMounts(source);
   });
 
-  drawSimpleText({ x: 50, y: 100 }, getIslandName(islands.length > 0), "#00000090");
+  //drawSimpleTitle({ x: 50, y: 100 }, getIslandName(islands.length > 0), "#00000090");
 
   applyStyleToMap();
 }

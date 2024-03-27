@@ -3,7 +3,7 @@ import { NumberMap } from "../../types";
 import * as Renderer from "./renderer";
 import { blendColors, createFromNumber } from "./color";
 
-export function draw(elevationMap: NumberMap, step: number, color = "#89F590") {
+export function draw(elevationMap: NumberMap, step: number, color = "#89F590a0") {
   for (let x = 0; x < elevationMap.length; x++) {
     for (let y = 0; y < elevationMap[x].length; y++) {
       if (elevationMap[x][y] > 0) {
@@ -16,7 +16,10 @@ export function draw(elevationMap: NumberMap, step: number, color = "#89F590") {
   }
 }
 
-export function drawElevation(elevationMap: NumberMap, step: number, color: string = "#ff0000") {
+type cb = (source: NumberMap, x: number, y: number, v:number) => void
+
+export function drawElevation(elevationMap: NumberMap, step: number, color: string = "#ff0000a0",
+callback?: cb) {
   for (let x = 0; x < elevationMap.length; x++) {
     for (let y = 0; y < elevationMap[x].length; y++) {
       if (elevationMap[x][y] > -1) {
@@ -26,7 +29,7 @@ export function drawElevation(elevationMap: NumberMap, step: number, color: stri
           .rect(step, step)
           .move(step * x, step * y)
           .fill(_color)
-          .click(() => console.log(x, y, v));
+          .click(() => callback && callback(elevationMap, x, y, v));
       }
     }
   }
